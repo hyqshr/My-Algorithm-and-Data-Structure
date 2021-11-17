@@ -1,8 +1,16 @@
-# 1. 食用心得
+# 1. Notes for Introduction to Algorithms
 
+# 算法导论笔记
 
-
+- The notes are sorted according to the teaching order of NEU CS 5800 **Prof. Virgil Pavlu**, some chapters of the original book are skimmed.
 - 笔记按照NEU CS 5800 **Prof. Virgil Pavlu** 的教授顺序来排序，有掠过原书的一些章节。
+
+- 如果不支持markdown可以下载pdf。
+
+- 持续更新中，有一些图片还未上传到图床。
+
+
+
 - notes by  ```Yiqiu Huang```
 
 
