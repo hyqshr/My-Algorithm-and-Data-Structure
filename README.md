@@ -441,21 +441,21 @@ worst running time is O(log n)
 
 ![image-20211029162544691](C:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20211029162544691.png)
 
-## 6.3 Heap sort
+## 6.3 Heap sort: 堆排序
 
 ### 6.3.1 MAX-HEAPIFY
 
-最大堆性质：
+**最大堆性质：**
 
  In a **max-heap**, the **max-heap property** is that for every node i other than the root:
 
 ![image-20211026155535675](C:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20211026155535675.png)
 
+最小堆性质与之相反；
+
 
 
 为了满足最大堆性质，你需要调用:
-
-****:
 
 ![image-20211026155823020](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211026155823020.png)
 
@@ -2262,11 +2262,546 @@ https://www.quora.com/Difference-between-binary-search-tree-and-red-black-tree
 
 
 
+# 17 Amortized Analysis: 平摊分析
+
+在平摊分析中，执行一系列数据结构操作所需要的时间是通过执行的所有操作求平均而得出的。
+
+## 17.1. Aggregate analysis
+
+对堆栈添加一个额外的操作MULTIPOP, 现在有：
+
+```
+PUSH(S, x):将x压入S
+
+POP（S）：弹出栈顶
+
+MULTIPOP（S, k）：弹出栈顶k个对象
+```
+
+
+
+在最坏情况下，MULTIPOP操作的时间复杂度为O(n)。
+
+
+
+现在开始分析由*n*个*PUSH*， *POP*和*MULTIPOP*操作序列，其作用于一个初始为空的栈：
+
+
+
+每个操作的最坏情况是$O(n)$, 因此n个操作序列的代价是$O(n^2)$;
+
+
+
+这一分析虽然正确，但是这个bound不够紧凑；
+
+
+
+一个对象在每次被压入栈后，至多被弹出一次。所以，调用POP（包括MULTIPOP）的次数至多等于PUSH的次数，即至多为n.。对任意的n，包含n个PUSH, POP, MULTIPOP操作的序列的总时间为O(n). 每个操作的平均代价为O(n) / n = O(1).。 
+
+
+
+**聚集分析中，将每个操作的平摊代价指派为平均代价。所以三个栈操作的平摊代价都是O(1)。**
+
+
+
+## 17.2. Accounting methoed: 记账法
+
+**直觉是这样的：Accounting Method，要求你先计算出每个操作要“存”多少钱，然后给别的操作消费。**
+
+
+
+在平摊分析的记帐方法中，对不同的操作赋予不同的费用，某些操作的费用比它们的实际代价或多或少。
+
+
+
+我们对一个操作的收费的数量称为平摊代价。当一个操作的平摊代价超过了它的实际代价时，两者的差值就被当作存款(credit)，并赋予数据结构中的一些特定对象，可以用来补偿那些平摊代价低于其实际代价的操作。
+
+数据结构中存储的总存款等于总的平摊代价和总的实际代价之差。注意：总存款不能是负的。
+
+
+
+**核心思想是PAY IN ADVANCE：提前支付费用**
+
+
+
+**Stack Operations**
+
+| **操作** | 真实花费 | 平摊花费 |
+| -------- | -------- | :------- |
+| Push     | 1        | 2        |
+| Pop      | 1        | 0        |
+| MultiPop | min(k,s) | 0        |
+
+可以看到对于Push操作，平摊花费比真实花费要多1，这个1即使`credit`。即栈中的每个元素都有一个值为1的credit，之后的Pop操作和Multipop操作平摊花费都为0，相当于是使用一个`credit`。因为在Pop前都必须调用了相应数量的Push，所以总和的`credit`永远不会小于0
+
+因此对于一系列n个操作而言，其总共的平摊花费也是O(n)。
+
+
+
+## 17.3. Potential Method: 势能法
+
+原文：
+
+![image-20211121182905800](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121182905800.png)
+
+
+
+我们假设数据结构$Di−1$在进行了第$i$个操作后，变为了数据结构$Di$，其中第i个操作的真实花费为$ci$，数据$Di$的势能为$Φ(Di)$，数据$Di−1$的势能为$Φ(Di−1)$。那么平摊开销(amortized cost)就是：
+
+![image-20211121183511698](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121183511698.png)
+
+平摊开销 = 势能差 + 真实开销 （核心思想类似上一节的acounting 方法）
+
+
+
+经过 $n$次操作以后, 平摊开销就是：
+
+![image-20211121184240125](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121184240125.png)
+
+继续使用stack作为例子：
+
+我们定义potential function $Φ$ 是stack的数据数量；
+
+那么对于空栈$D_0$来，他的$Φ(D_0)$就是0；
+
+
+
+如果第$i$次的操作是对一个 *有$s$个数据对象的堆栈* 进行**PUSH**操作，那么势能差为：
+
+![image-20211121185201293](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121185201293.png)
+
+
+
+求出平摊开销：
+
+![image-20211121185224518](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121185224518.png)
+
+
+
+如果第 $i$ 次的操作是**MULTIPOP**操作，我们要将![image-20211121185856165](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121185856165.png) 个数据对象全部pop出去，那么势能差为：
+
+
+
+![image-20211121185931885](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121185931885.png)
+
+平摊开销：
+
+![image-20211121185948220](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121185948220.png)
+
+好文：帮助理解
+
+https://www.zhihu.com/question/40156083
+
+
+
+# 19 Fibonacci Heaps
+
+- 可和并堆
+- 多个操作的平摊开销都是contant time
+
+
+
+**Mergeable Heaps: 可和并堆**:
+
+定义：
+
+>可合并堆支持以下五个操作，并且每一个元素都有一个```key```:
+>
+>![image-20211122132217137](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211122132217137.png)
+>
+>
+>
+>Fibonacci 堆额外支持以下两个操作：
+>
+>![image-20211122132302820](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211122132302820.png)
+>
+>
+>
+>操作的时间复杂度如下：
+>
+>![image-20211122132428819](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211122132428819.png)
+
+
+
+## 19.1. Structure of Fibonacci heaps
+
+斐波那契堆是树的集合，每一棵树都满足最小堆性质；
+
+每一个node x 都有 ```x.p```指向parent, ```x.child```指向一个children;
+
+x的children用**双向链表** 像环一样的连在一起，我们叫他```child list of x```
+
+>![ ](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211122134407345.png)
+>
+>
 
 
 
 
 
+
+
+# 位运算：Bit-Manipulation
+
+![image-20211118215125750](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211118215125750.png)
+
+## 计算机如何表示整数？
+
+来自https://www.cnblogs.com/Neeo/articles/10536202.html
+
+需要掌握以下四个概念：
+
+``定点数``有3种表示法：``原码``、``反码``和``补码``。
+
+
+
+**原码**
+
+[原码](https://baike.baidu.com/item/原码)(true form)是一种计算机中对数字的二进制定点表示方法。原码表示法在数值前面增加了一位符号位（即最高位为符号位）：正数该位为0，负数该位为1（0有两种表示：+0和-0），其余位表示数值的大小。
+
+
+
+![image-20211118215529377](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211118215529377.png)
+
+
+
+缺点：
+
+- 原码中的0分为`+0`和`-0`
+
+- 在进行不同符号的加法运算或者同符号的减法运算时，不能直接判断出结果的正负，我们必须要将两个值的绝对值进行比较。然后再进行加减操作。
+
+
+
+**反码**
+
+正数的反码就是原码：
+
+![image-20211118215852263](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211118215852263.png)
+
+
+
+**补码**
+
+在计算机系统中，数值一律用[补码](https://baike.baidu.com/item/补码)来表示和存储。
+
+原因在于，使用补码，可以将符号位和数值域统一处理；同时，加法和减法也可以统一处理。此外，补码与原码相互转换，其运算过程是相同的，不需要额外的硬件电路支持。
+
+记住口诀：正数的补码与原码相同，负数的补码为其原码除符号位外所有位取反（这就是反码了），然后最低位加1。
+
+![image-20211118220439000](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211118220439000.png)
+
+
+
+## 位运算算法
+
+
+
+### **如何check if 一个数是2的次方？**
+
+方法1：
+
+
+
+```python
+def isPowerOfTwo(n):
+    if (n == 0):
+        return False
+    while (n != 1):
+            if (n % 2 != 0):
+                return False
+            n = n // 2
+             
+    return True
+```
+
+
+
+如果数字能不停被2整除，并且最终等于1，那么是2的次方；
+
+否则不是。
+
+这个方法的时间复杂度是$O(lgn)$
+
+
+
+方法2：
+
+使用位运算。
+
+
+
+如果一个数是2的次方，那么位运算：```n & (n - 1)```会是0。（只要n > 0）
+
+
+
+为啥呢？
+
+
+
+2, 4, 8, 16 .... 这样的2的次方的数字都只有第一位是1；
+
+只要把他们减一，比如：
+
+把4 - 1 = 3 –> 011 
+  16 - 1 = 15 –> 01111
+
+而4 = 100
+
+16 = 10000,
+
+
+
+这样如果进行```^```运算，就不会有任何一位相等；4&3 == 0， 16&15 == 0；
+
+
+
+所以我们的函数：
+
+```python
+def isPowerOfTwo(x):
+	
+	return (x and (not(x & (x - 1))))
+```
+
+
+
+### 二进制数中 1 的数量
+
+首先, python中有内置函数，来count1:
+
+```python
+>>> bin(5)
+'0b101'
+
+>>> bin(5).count('1')
+2
+```
+
+但是这不是我们想要的。
+
+
+
+玩的就是old school:
+
+
+
+继续上一个算法，每次一个数字n被减去 1, **最右边的1 和 再往右的数字就会被翻转；**
+
+
+
+因此这个神奇的操作：
+
+
+
+```python
+n & (n - 1)
+```
+
+
+
+每次会让原来的数字中少一个1；(每次转掉一个1)
+
+
+
+就这样用循环来count 1的数量即可；
+
+
+
+以23 和 22 为例子：
+
+23 ： 10111
+
+22： 10110
+
+
+
+23 & 22 = 10110 = 22
+
+21: 10101
+
+22 & 21 = 10100 = 20
+
+19: 10011
+
+20 & 19 = 10000 = 16
+
+16 & 15 = 0
+
+
+
+来一题LC：
+
+https://leetcode.com/problems/hamming-distance/
+
+
+
+```python
+class Solution:
+    def hammingDistance(self, x: int, y: int) -> int:
+        x = x^y
+        res = 0 
+        while x:
+            x = x & (x - 1)
+            res += 1
+        return res
+```
+
+
+
+先进性异位运算，在count("1")即可。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 额外的图LeetCode
+
+
+
+![image-20211117142319656](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211117142319656.png)
+
+```python
+def bfs(n, m, edges, s):
+    queue = [s]
+    visited = [s]
+    dists = {s: 0}
+    adjList = {}
+    for i in range(len(edges)):
+        edge = edges[i]
+        x = edge[0]
+        y = edge[1]
+        if x in adjList:
+            if y not in adjList[x]:
+                adjList[x].append(y)
+        else:
+            adjList[x] = [y]
+        if y in adjList:
+            if x not in adjList[y]:
+                adjList[y].append(x)
+        else:
+            adjList[y] = [x]
+    while len(queue) > 0:
+        node = queue.pop(0)
+        if node in adjList:
+            neighbors = adjList[node]
+            for j in range(len(neighbors)):
+                if neighbors[j] not in visited:
+                    dists[neighbors[j]] = dists[node] + 6
+                    visited.append(neighbors[j])
+                    queue.append(neighbors[j])
+    res = []
+    for i in range(1,n+1):
+        if i not in dists:
+            res.append(-1)
+        elif dists[i] != 0:
+            res.append(dists[i])
+    return res
+```
 
 
 
