@@ -2394,10 +2394,21 @@ https://www.zhihu.com/question/40156083
 
 
 
-# 19 Fibonacci Heaps
+# 19 Fibonacci Heaps: 斐波那契堆
 
-- 可和并堆
-- 多个操作的平摊开销都是contant time
+这算法看的比红黑树还眩晕，细节参考原文吧，网上教程也很少；
+
+重点看一下这个操作的时间复杂度 以及 intuition 就溜了。
+
+![image-20211122234213923](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211122234213923.png)
+
+- 一组满足堆性质（一般是**最小堆**性质）的**树**的集合
+- 始终保持一个指针指向最小的元素的对象
+- 使用```marked```node属性，来保持heaps的扁平
+
+
+
+
 
 
 
@@ -2437,11 +2448,63 @@ x的children用**双向链表** 像环一样的连在一起，我们叫他```chi
 
 
 
+看伪码会看傻逼的，我总结一下几个操作：
 
+
+
+```insert```:
+
+- 在root list的位置插入新的node，把left和right指针设置好；
+- 如果小于```min```指针，就更新```min```指针为当前对象；
+- 总结点数量+1
+
+
+
+```extract_min()```:
+
+这个操作会像pop一样取出当前最小的节点，并且可能会调整整个堆的结构；
+
+*这是最核心的操作，也是最眩晕的操作：*
+
+
+
+- 根据```min```指针取出最小对象，say ```z```；
+- 如果```z```有child, 把所有child先**升级到root list**当中，然后将parent设置为**None**；
+- 设置好各种left 和 right指针，把```z```移除；
+- 判断：
+  - 如果```z```是唯一节点，那么成了空堆，把min指针和root list都设置为None
+  - 很可惜他往往不是唯一节点，那么就要调用```consolidate```方法
+
+- 最后将树的节点数-1
+
+
+
+```consolidate```:
+
+```degree```的作用在这个函数体现，**我们要确定每个node的```degree```都是不同的**;
+
+
+
+- 遍历root list的节点：
+  - 如果degree相同，把值小的节点从从root list中拿掉，连接到值大的节点的child方法上；这个操作是用```heap-link```函数来实现的；之后，把值更大的节点的degree + 1
+
+经过这个操作以后，堆结构会变得更加扁平；
+
+
+
+关于decrease key操作，降低某个节点的值，所以可能破坏最小堆性质；
+
+因此又是一堆伪码；上张图理解一下intuition吧：
+
+
+
+![image-20211123013817471](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211123013817471.png)
 
 
 
 # 位运算：Bit-Manipulation
+
+后面就不是算法导论/课堂的内容了。
 
 ![image-20211118215125750](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211118215125750.png)
 
@@ -2501,7 +2564,11 @@ x的children用**双向链表** 像环一样的连在一起，我们叫他```chi
 
 方法1：
 
+如果数字能不停被2整除，并且最终等于1，那么是2的次方；
 
+否则不是。
+
+这个方法的时间复杂度是$O(lgn)$
 
 ```python
 def isPowerOfTwo(n):
@@ -2517,12 +2584,6 @@ def isPowerOfTwo(n):
 
 
 
-如果数字能不停被2整除，并且最终等于1，那么是2的次方；
-
-否则不是。
-
-这个方法的时间复杂度是$O(lgn)$
-
 
 
 方法2：
@@ -2531,7 +2592,7 @@ def isPowerOfTwo(n):
 
 
 
-如果一个数是2的次方，那么位运算：```n & (n - 1)```会是0。（只要n > 0）
+如果一个数是2的次方，那么位运算：```n & (n - 1)```结果必定是0。（只要n > 0）
 
 
 
@@ -2539,7 +2600,7 @@ def isPowerOfTwo(n):
 
 
 
-2, 4, 8, 16 .... 这样的2的次方的数字都只有第一位是1；
+2, 4, 8, 16 .... 这样的2的次方的数字的二进制数都只有第一位是1；
 
 只要把他们减一，比如：
 
@@ -2552,7 +2613,7 @@ def isPowerOfTwo(n):
 
 
 
-这样如果进行```^```运算，就不会有任何一位相等；4&3 == 0， 16&15 == 0；
+这样如果进行```&```运算，就不会有任何一位相等；4&3 == 0， 16&15 == 0；
 
 
 
@@ -2560,7 +2621,6 @@ def isPowerOfTwo(n):
 
 ```python
 def isPowerOfTwo(x):
-	
 	return (x and (not(x & (x - 1))))
 ```
 
@@ -2586,7 +2646,7 @@ def isPowerOfTwo(x):
 
 
 
-继续上一个算法，每次一个数字n被减去 1, **最右边的1 和 再往右的数字就会被翻转；**
+继续上一个算法 ，每次一个数字n被减去 1, **最右边的1 和 再往右的数字就会被翻转；**
 
 
 
@@ -2630,7 +2690,7 @@ n & (n - 1)
 
 
 
-来一题LC：
+来一题LC：汉明距离：
 
 https://leetcode.com/problems/hamming-distance/
 
@@ -2816,4 +2876,3 @@ def bfs(n, m, edges, s):
 ![image-20211025160940605](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025160940605.png) 
 
 egg_drop
-
