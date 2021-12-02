@@ -14,7 +14,6 @@ class Node:
 
 class Skiplist:
 
-
     def __init__(self):
         # The linked list of each level is stored in ```self.level```
         # Init value of each level linked list is negative infinity: ```-math.inf```
@@ -35,7 +34,6 @@ class Skiplist:
         :param val:
         :return: Max_level * nodes that right just smaller than input val
         '''
-
         # Enter a ``val``, as long as the next element is smaller than val, go to the right (next);
         # Otherwise, go down
         res = []
@@ -88,13 +86,30 @@ class Skiplist:
                 found = True
         return found
 
+    def print_level(self):
+        level_len = len(self.levels)
+        for each_level_head in self.levels:
+            print('\n{} level: '.format(level_len))
+            cur = each_level_head
+            while cur != None:
+                print(cur.val,'--',end=' ')
+                cur = cur.next
+
+            level_len -= 1
+            print()
+
+
 if __name__ == '__main__':
     skiplist = Skiplist()
-    print(len(skiplist.levels))
-    print(skiplist.levels[0].down == skiplist.levels[1])
+    print('Max level of the skiplists: ',len(skiplist.levels))
+    print('The "down" of highest level is the second highest level: ',skiplist.levels[0].down == skiplist.levels[1])
+
+    insert_nums = [random.randint(0,300) for i in range(0,30)]
+    print('The nums added will be : ',insert_nums)
+    for i in insert_nums:
+        skiplist.add(i)
     skiplist.add(1)
-    skiplist.add(2)
-    skiplist.add(3)
-    skiplist.search(3)
-    skiplist.add(4)
-    skiplist.delete(4)
+    # skiplist.search(3)
+    # skiplist.delete(0)
+
+    skiplist.print_level()

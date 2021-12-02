@@ -1,5 +1,4 @@
 #implement RBTree without deletion
-
 import random
 
 
@@ -14,7 +13,7 @@ class RBNode:
 
 class RBTree:
     def __init__(self):
-        self.nil = RBNode(0)
+        self.nil = RBNode(float('-inf'))
         self.nil.red = False
         self.nil.left = None
         self.nil.right = None
@@ -153,11 +152,6 @@ class RBTree:
 
         return prec
 
-    def __repr__(self):
-        lines = []
-        print_tree(self.root, lines)
-        return '\n'.join(lines)
-
     def sort(self):
         res = []
         def inorder(root, res):
@@ -198,20 +192,30 @@ def findMax(tree,node):
 
     return current.val
 
-def findPredecessor(tree,n):
+def findPredecessor(tree,p):
     '''
     recursive implement of findPredecessor
 
     :param node:
     :return: its Predecessor
     '''
-    head = n
-    if head:
-        if head.left:
-            return findMin(tree,head.left)
+    predecessor = None
+    root = tree.root
+    while root is not tree.nil:
+        if p.val > root.val:
+            predecessor = root
+            root = root.right
         else:
-            print('No predcessor found')
-    return None
+            root = root.left
+    if predecessor:
+        print('predecessor of {} found!: {}'.format(p.val,predecessor.val))
+    else:
+        print('No Predecessor!')
+    return predecessor
+
+
+
+
 
 def findSuccessor(tree,n):
     '''
@@ -221,7 +225,7 @@ def findSuccessor(tree,n):
     :return sucessor of node n:
     '''
     # if node.right,find Successor in node.right
-    if n.right:
+    if n.right is not tree.nil:
         return findMin(tree,n.right)
 
     # else,Successor is above the
@@ -231,17 +235,8 @@ def findSuccessor(tree,n):
             break
         n = p
         p = p.parent
+    print('Successor of {} found!: {}'.format(n.val,p.val))
     return p
-
-
-
-
-def print_tree(node, lines, level=0):
-    if node.val != 0:
-        print_tree(node.left, lines, level + 1)
-        lines.append('-' * 4 * level + '> ' +
-                     str(node.val) + ' ' + ('r' if node.red else 'b'))
-        print_tree(node.right, lines, level + 1)
 
 
 def get_nums(num):
@@ -255,25 +250,44 @@ def get_nums(num):
 def main():
     #create test case
     tree = RBTree()
-    for x in [1,5,2,4,9,7,8,10]:
+    insert_nums = [1,2,3,5,11,15]
+    print('insert nums: ',insert_nums)
+    for x in insert_nums:
         tree.insert(x)
     #test search func
     print('search',tree.search(5).val)
+    print('search',tree.search(7).val)
 
     #test sort func
-    tree.sort()
-    print(tree)
+    # tree.sort()
+    # print(tree)
 
     #test findMin and findMax func
     print('max',findMax(tree,tree.root))
     print('min',findMin(tree,tree.root))
+    #
+    print('\ntest findSuccessor and findPredecessor\n')
+    x = tree.search(3)
+    findSuccessor(tree,x)
+    findPredecessor(tree, x)
+    print()
 
-    #test findSuccessor and findPredecessor
-    x = tree.root.left
-    print('x',x.val)
-    print('The successor of x is :',findSuccessor(tree,x))
-    print('The predecessor of x is :', findPredecessor(tree, x))
+    x = tree.search(11)
+    findSuccessor(tree,x)
+    findPredecessor(tree, x)
 
 
 if __name__ == '__main__':
+    # nums = ''
+    # for _ in range(0,30):
+    #     nums += str(random.randint(1,100))
+    #     nums += ' '
+    #
+    #
+    # with open('./input_nums.txt','w') as f:
+    #     f.write(nums)
+    # with open('./input_nums.txt','r') as f:
+    #     nums = f.readlines()[0]
+    # nums = nums.split()
+
     main()

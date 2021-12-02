@@ -2,6 +2,7 @@
 import re
 import random
 from collections import Counter
+
 class ListNode:
     def __init__(self,count,string):
         self.val = count
@@ -98,6 +99,7 @@ class Hashmap():
                     print(head.key, head.val, end=" ")
                     head = head.next
                 print('')
+
     def check(self):
         used_slot = 0
         for i in range(len(self.HashTable)):
@@ -132,10 +134,10 @@ if __name__ == '__main__':
     # Creating Hashtable
     hashmap = Hashmap()
 
+
     #read corpus
     file_path = 'alice_in_wonderland.txt'
     corpus = read_file_to_string_list(file_path)
-
     #insert word from corpus into hashtable
     for i in corpus:
         hashmap.insert(i)
@@ -151,19 +153,20 @@ if __name__ == '__main__':
     print('Try find word:\'just\'',hashmap.find('just').key)
     print('Try find Non-exist word: asd456',hashmap.find('asd456'))
 
-
+    new_words = ['a123','hello','world']
+    for i in new_words:
+        hashmap.insert(i)
     #Test delete function
-    print('\n\n------------Test delete function------------\n\n')
-    hashmap.delete('just')
-    print('Delete word:just',hashmap.find('just'))
-    print('Try find non-exist word:a9ds8',hashmap.find('a9ds8'))
-
-
-    print('\n\n------------Test increase function------------\n\n')
-    #Test increase function
-    print('count of word:\'the\' is: ',hashmap.find('the').val)
-    hashmap.increase('the',10)
-    print('count of word:\'the\' after increase is: ',hashmap.find('the').val)
+    # print('\n\n------------Test delete function------------\n\n')
+    # hashmap.delete('just')
+    # print('Delete word:just',hashmap.find('just'))
+    # print('Try find non-exist word:a9ds8',hashmap.find('a9ds8'))
+    print(hashmap.find('a123').key)
+    # print('\n\n------------Test increase function------------\n\n')
+    # #Test increase function
+    # print('count of word:\'the\' is: ',hashmap.find('the').val)
+    # hashmap.increase('the',10)
+    # print('count of word:\'the\' after increase is: ',hashmap.find('the').val)
 
 # \begin{minted}{python}
 # \end{minted}

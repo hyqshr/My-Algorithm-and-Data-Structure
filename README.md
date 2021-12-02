@@ -1830,13 +1830,17 @@ $$
 
 >**Implement a hash for text.** 
 
-Given a string as input, construct a hash with words as keys, and wordcounts as values. Your implementation should include:
 
-•  a hash function that has good properties for text
 
-•  storage and collision management using linked lists
+>Given a string as input, construct a hash with words as keys, and wordcounts as values. Your implementation should include:
+>
+>•  a hash function that has good properties for text
+>
+>•  storage and collision management using linked lists
+>
+>•  operations: insert(key,value), delete(key), increase(key), find(key), list-all-keys
 
-•  operations: insert(key,value), delete(key), increase(key), find(key), list-all-keys
+
 
 
 
@@ -1862,33 +1866,9 @@ http://www.cse.yorku.ca/~oz/hash.html
 
 
 
-python 位运算：
+**实施hash_djb2:**
 
-按位运算符是把数字看作二进制来进行计算的。Python中的按位运算法则如下：
-
-下表中变量 a 为 60，b 为 13，二进制格式如下：
-
-```
-a = 0011 1100
-
-b = 0000 1101
-
------------------
-
-a&b = 0000 1100
-
-a|b = 0011 1101
-
-a^b = 0011 0001
-
-~a  = 1100 0011
-```
-
-
-
-实施hash_djb2:
-
-
+忘记位运算的先复习一下；
 
 ```python
 def hash_djb2(s):
@@ -1898,7 +1878,9 @@ def hash_djb2(s):
     return hash & 0xFFFFFFFF
 ```
 
-这个函数的magic在于他的两个魔法数字：33和5381，这里用的是5381；
+
+
+这个函数的magic在于他的两个魔法数字：33和5381，这里用的是5381；这是一个经验主义得到的magic number,不用纠结太多；
 
 
 
@@ -1914,6 +1896,26 @@ print(hash_djb2('b'))
 177670
 177671
 ```
+
+
+
+### Hash table python implementation
+
+python自己实现哈希表
+
+
+
+目标如下：
+
+- 给定一段长文本txt文件，我的hashmap读入文件，以word作为key，word count作为value；
+
+- 使用chaining 方法来handle collision
+
+
+
+结果是这样的：
+
+![image-20211202023112513](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211202023112513.png)
 
 
 
@@ -2220,6 +2222,67 @@ index = 3 存的是最基础的链表，也就是长度为 $n$ 的链表，如�
 
 **Case 3:** **z’s uncle** y **is black and** z **is a left child**
 
+
+
+总共有6个cases;
+
+因为3个3个cases之间是对称的，因此
+
+我们关注三个case:
+
+> **Case 1:** ``z's`` uncle ``y`` **is red**
+>
+> **Case 2:** **z’s uncle** y **is black and** z **is a right child**
+>
+> **Case 3:** **z’s uncle** y **is black and** z **is a left child**
+
+
+
+**Case 1:** ``z's`` uncle ``y`` **is red**
+
+z的舅舅是红色的，此时违反了性质4: 即一个red的儿子必须是两个black;
+
+
+
+![image-20211126002114594](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211126002114594.png)
+
+此时的操作：
+
+```
+1. 把uncle由红变黑；
+2. 把parent(A)变黑
+3. 把爷爷(c)变红；
+4. 把指针从z移到爷爷
+```
+
+
+
+**Case 2:** **z’s uncle** y **is black and** z **is a right child**
+
+case 2和 case 3是相互交织的；
+
+case 2还是违反了性质4；此时用一个**左旋**/**右旋**直接进入case 3;
+
+
+
+![image-20211126003149715](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211126003149715.png)
+
+```
+1.移动指针到parent
+2.旋转，进入case3
+```
+
+
+
+**Case 3:** **z’s uncle** y **is black and** z **is a left child**
+
+```
+1.翻转parent和爷爷的color;
+2.对爷爷调用旋转；
+```
+
+
+
 **插入以后会导致RBT的那些性质会被violated?**
 
 - Property 2: 根节点是黑
@@ -2499,6 +2562,202 @@ x的children用**双向链表** 像环一样的连在一起，我们叫他```chi
 
 
 ![image-20211123013817471](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211123013817471.png)
+
+
+
+
+
+# 22 Graph: 图
+
+表示图的标准方法：
+$$
+G = (V,E)
+$$
+Graph是由Vertices定点和Edges边组成的；
+
+**无向图**表示法: 
+
+![image-20211127191038926](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211127191038926.png)
+
+
+
+(a): 由5个顶点，7个边组成的无向图
+
+(b): 临边列表表示法(adjaceny-list representation) of G
+
+(c): 临边矩阵表示法(The adjacency-matrix representation) of G
+
+再无向图中，(c)是对称的;
+
+
+
+**有向图**表示法：
+
+![image-20211127191524068](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211127191524068.png)
+
+(a):由6个顶点，8个边组成的无向图
+
+(b): 临边列表表示法(adjaceny-list representation) of G
+
+(c): 临边矩阵表示法(The adjacency-matrix representation) of G
+
+## 22.2 BFS：广度优先搜索
+
+广度优先搜索，没啥说的了；
+
+下面的代码假设图的储存方式是LIST储存法；(而不是MATRIX)
+
+![image-20211128015122938](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211128015122938.png)
+
+
+
+这里color = white代表没遇到过的节点；
+
+d表示距离；
+
+$\pi$ : 代表parent;
+
+
+
+这里使用堆栈的方法来储存接下来要开始BFS的节点；
+
+
+
+## 22.3 DFS： 深度优先搜索
+
+
+
+
+
+![image-20211128015820198](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211128015820198.png)
+
+
+
+稍微注意下开始和结束的时间，其他没啥说的
+
+![image-20211128020036926](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211128020036926.png)
+
+
+
+## 23. 最小生成树: Minimum Spanning Trees
+
+最小生成树往往是在**无向有权图**上来讨论。
+
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211129225540791.png" alt="image-20211129225540791" style="zoom:67%;" />
+
+最小生成树不一定是唯一的；
+
+
+
+**简单的定义：你希望找到一组总权重最小，同时经过了所有点的边；**
+
+
+
+严格定义如下：
+
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211129225642221.png" alt="image-20211129225642221" style="zoom: 80%;" />
+
+
+
+找到最小生成树的算法的大致模糊思路如下，详细的会在下一节展，这里看看就好：
+
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211129230119205.png" alt="image-20211129230119205" style="zoom:80%;" />
+
+A是一组边的集合，一开始设为空集；A代表最小生成树的子集，最终会成为一颗MST（最小生成树）。
+
+如图，在A成为完整MST前，每一步我们都：
+
+- 找到一条 "safe edge", 并加入A
+
+知道A成为完整MST。
+
+
+
+在展开算法前，对一些术语下定义：
+
+先给原文，再给我的简单理解：
+
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211129230716056.png" alt="image-20211129230716056" style="zoom:80%;" />
+
+1. **图的切分：cut(S, V - S)**
+
+下图是**cut(S, V - S)**；
+
+S是黑点，上方的图；
+
+V-S是白点，下方；
+
+2. 如果一条边在S和V-S各有一个顶点，那我们说这条边**cross** cut(S, V - S)
+3. 在cross的边中，weight最小的边叫做**light edge**.
+
+![image-20211129235123255](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211129235123255.png)
+
+
+
+## 23.2 找到最小生成树的算法: The algorithms of Kruskal and Prim
+
+两个算法都是贪心算法。
+
+### Kruskal's Algorithm
+
+
+
+![image-20211130010445278](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211130010445278.png)
+
+
+
+第六行的```find-set```操作其实就是检查图是否有形成cycle(能不能连通)。
+
+所以，核心就是将边先按照**升序**排序，然后进行遍历；
+
+因此每次都是当前最小权重的edge。
+
+对当前遍历到的边：
+
+- 如果加入这条边后，A形成cycle, 那么跳过这条边；
+- 如果没有形成cycle，那么将当前的边加入A
+
+最后返回。
+
+![image-20211130011503449](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211130011503449.png)
+
+![image-20211130012241595](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211130012241595.png)
+
+
+
+
+
+
+
+### Prim's Algorithm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

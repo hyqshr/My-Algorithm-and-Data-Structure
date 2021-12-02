@@ -71,8 +71,15 @@ class Hashmap():
         head = self.find(string)
 
         if not head:
-            print('string is not found')
-            return None
+            print('{} is not found'.format(string))
+            return
+
+        #find the string in chaining
+        while head:
+            if head.key == string:
+                break
+            else:
+                head = head.next
         #if head is not the first node
         if head.prev:
             head.prev.next = head.next
@@ -87,7 +94,6 @@ class Hashmap():
         if self.find(string):
             self.find(string).val += num
 
-
     # Function to display hashtable
     def display_hash(self):
         for i in range(len(self.HashTable)):
@@ -98,6 +104,7 @@ class Hashmap():
                     print(head.key, head.val, end=" ")
                     head = head.next
                 print('')
+
     def check(self):
         used_slot = 0
         for i in range(len(self.HashTable)):
@@ -105,7 +112,6 @@ class Hashmap():
                 used_slot += 1
         print('{} of 10000 slot are used'.format(used_slot))
         print('{} collisions happens'.format(self.collision))
-
 
 
 def read_file_to_string_list(file_path):
