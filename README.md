@@ -1,4 +1,4 @@
-# 1. Notes for Introduction to Algorithms
+Notes for Introduction to Algorithms
 
 # 算法导论笔记
 
@@ -25,7 +25,7 @@
 
 - we are interested in order of growth, not exact values 
   -  for example T(n) = Θ(n2) means quadratic running time  
-  - T(n) = O(n logn) means T(n) grows not faster than CONST*n*log(n)
+  -  T(n) = O(n logn) means T(n) grows not faster than CONST*n*log(n)
 
 
 
@@ -42,8 +42,6 @@ Why **Asymptotic notation**?
 
 
 ### 3.1.1 $\Theta$ Notation
-
-
 
 原文定义如下：
 
@@ -837,7 +835,7 @@ Sort M:
 >
 >
 >
-> ***剩下的，交给递归recursive***
+>***剩下的，交给递归recursive***
 >
 ><img src="C:/Users/Administrator/AppData/Roaming/Typora/typora-user-images/image-20211008004254723.png" alt="image-20211008004254723" style="zoom:80%;" />
 >
@@ -941,7 +939,7 @@ contains within it optimal solutions to subproblems.
 >- **In contrast, dynamic programming applies when the subproblems overlap—that is, when subproblems share subsubproblems.:**
 >
 >>- **divide-and-conquer** algorithm **does more work than necessary**, repeatedly solving the common subsubproblems.
->>
+>
 >>- **dynamic-programming** algorithm solves each subsubproblem just once and then **saves its answer in a table**, thereby avoiding the work of recomputing the answer every time it solves each subsubproblem.
 
 ![image-20211014012344213](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211014012344213.png)
@@ -1015,17 +1013,18 @@ It is a **time-memory trade-off**.
 >The fifirst approach is **top-down with memoization**.
 >
 ><details>
->    The first approach is top-down with memoization. In this approach, we write the procedure recursively in a natural manner, but modifified to save the result of
+>The first approach is top-down with memoization. In this approach, we write the procedure recursively in a natural manner, but modifified to save the result of
 >each subproblem (usually in an array or hash table). 
->    The procedure now first checks to see whether it has previously solved this subproblem. If so, it returns the saved value, saving further computation at this level; if not, the procedure computes the value in the usual manner. We say that the recursive procedure has been memoized;it “remembers” what results it has computed previously.
+>The procedure now first checks to see whether it has previously solved this subproblem. If so, it returns the saved value, saving further computation at this level; if not, the procedure computes the value in the usual manner. We say that the recursive procedure has been memoized;it “remembers” what results it has computed previously.
+>
 >
 >
 >
 >The second approach is the **bottom-up method**. 
 >
 ><details>
->    This approach typically depends on some natural notion of the “size” of a subproblem, such that solving any particular subproblem depends only on solving “smaller” subproblems. We sort the subproblems by size and solve them in size order, smallest first. 
->    When solving a particular subproblem, we have already solved all of the smaller subproblems its solution depends upon, and we have saved their solutions. We solve each subproblem only once, and when we first see it, we have already solved all of its prerequisite subproblems.  
+>This approach typically depends on some natural notion of the “size” of a subproblem, such that solving any particular subproblem depends only on solving “smaller” subproblems. We sort the subproblems by size and solve them in size order, smallest first. 
+>When solving a particular subproblem, we have already solved all of the smaller subproblems its solution depends upon, and we have saved their solutions. We solve each subproblem only once, and when we first see it, we have already solved all of its prerequisite subproblems.  
 
 >简单来说，二者差别如下：
 >
@@ -2071,9 +2070,7 @@ index = 3 存的是最基础的链表，也就是长度为 $n$ 的链表，如�
 **search 搜索操作：**
 
 ```python
-    def search(self, target: int) -> bool:
-        last = self._iter(target)[-1]
-        return last.next and last.next.val == target
+    def search(self, target: int) -> bool:        last = self._iter(target)[-1]        return last.next and last.next.val == target
 ```
 
 
@@ -2085,21 +2082,7 @@ index = 3 存的是最基础的链表，也就是长度为 $n$ 的链表，如�
 **add/insert**操作
 
 ```python
-    def add(self, num: int) -> None:
-        res = self._iter(num)
-        prev = None
-        for i in range(len(res) - 1, -1, -1):
-            node = Node(num)
-            #res[i]是刚好比val小的元素，那么next就比val大咯
-            node.next = res[i].next
-            #指向低级链表
-            node.down = prev
-            #res[i]是刚好比val小的元素
-            res[i].next = node
-            prev = node
-            rand = random.random()
-            if rand > 0.5:
-                break
+    def add(self, num: int) -> None:        res = self._iter(num)        prev = None        for i in range(len(res) - 1, -1, -1):            node = Node(num)            #res[i]是刚好比val小的元素，那么next就比val大咯            node.next = res[i].next            #指向低级链表            node.down = prev            #res[i]是刚好比val小的元素            res[i].next = node            prev = node            rand = random.random()            if rand > 0.5:                break
 ```
 
 
@@ -2138,11 +2121,7 @@ index = 3 存的是最基础的链表，也就是长度为 $n$ 的链表，如�
 
 
 ```
-1）每个结点要么是红的，要么是黑的。  
-2）根结点是黑的。  
-3）每个叶结点（叶结点即指树尾端NIL指针或NULL结点）是黑的。  
-4）如果一个结点是红的，那么它的俩个儿子都是黑的。  
-5）对于任一结点而言，其到叶结点树尾端NIL指针的每一条路径都包含相同数目的黑结点。  
+1）每个结点要么是红的，要么是黑的。  2）根结点是黑的。  3）每个叶结点（叶结点即指树尾端NIL指针或NULL结点）是黑的。  4）如果一个结点是红的，那么它的俩个儿子都是黑的。  5）对于任一结点而言，其到叶结点树尾端NIL指针的每一条路径都包含相同数目的黑结点。  
 ```
 
 
@@ -2163,7 +2142,7 @@ index = 3 存的是最基础的链表，也就是长度为 $n$ 的链表，如�
 
 >When we do a left rotation on a node x, we assume that its right child y is not T:nil; x may be any node
 >
-> in the tree whose right child is not T:nil. The left rotation “pivots” around the link
+>in the tree whose right child is not T:nil. The left rotation “pivots” around the link
 >
 >from x to y. It makes y the new root of the subtree, with x as y’s left child and y’s
 >
@@ -2177,8 +2156,7 @@ index = 3 存的是最基础的链表，也就是长度为 $n$ 的链表，如�
 
 ​		旋转围绕着 ``x``和``y``的连接，我们让：
 
-				- ``y``成为该子树的root, 
-				- ``x``成为 ``y`` 的左child, ``y`` 原来的左child成为 ``x``的右child。
+				- ``y``成为该子树的root, 			- ``x``成为 ``y`` 的左child, ``y`` 原来的左child成为 ``x``的右child。
 
 
 
@@ -2249,10 +2227,7 @@ z的舅舅是红色的，此时违反了性质4: 即一个red的儿子必须是�
 此时的操作：
 
 ```
-1. 把uncle由红变黑；
-2. 把parent(A)变黑
-3. 把爷爷(c)变红；
-4. 把指针从z移到爷爷
+1. 把uncle由红变黑；2. 把parent(A)变黑3. 把爷爷(c)变红；4. 把指针从z移到爷爷
 ```
 
 
@@ -2268,8 +2243,7 @@ case 2还是违反了性质4；此时用一个**左旋**/**右旋**直接进入c
 ![image-20211126003149715](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211126003149715.png)
 
 ```
-1.移动指针到parent
-2.旋转，进入case3
+1.移动指针到parent2.旋转，进入case3
 ```
 
 
@@ -2277,8 +2251,7 @@ case 2还是违反了性质4；此时用一个**左旋**/**右旋**直接进入c
 **Case 3:** **z’s uncle** y **is black and** z **is a left child**
 
 ```
-1.翻转parent和爷爷的color;
-2.对爷爷调用旋转；
+1.翻转parent和爷爷的color;2.对爷爷调用旋转；
 ```
 
 
@@ -2331,13 +2304,11 @@ https://www.quora.com/Difference-between-binary-search-tree-and-red-black-tree
 
 ## 17.1. Aggregate analysis
 
-对堆栈添加一个额外的操作MULTIPOP, 现在有：
+如果堆栈添加一个新的操作```MULTIPOP``` 来一次性弹出栈顶的 $n$ 个元素：
 
 ```
 PUSH(S, x):将x压入S
-
 POP（S）：弹出栈顶
-
 MULTIPOP（S, k）：弹出栈顶k个对象
 ```
 
@@ -2409,17 +2380,19 @@ MULTIPOP（S, k）：弹出栈顶k个对象
 
 
 
-我们假设数据结构$Di−1$在进行了第$i$个操作后，变为了数据结构$Di$，其中第i个操作的真实花费为$ci$，数据$Di$的势能为$Φ(Di)$，数据$Di−1$的势能为$Φ(Di−1)$。那么平摊开销(amortized cost)就是：
+我们假设数据结构$Di−1$在进行了第$i$个操作后，变为了数据结构$Di$，其中第i个操作的真实花费为$ci$，数据$Di$的势能为$Φ(Di)$，数据$Di−1$的势能为$Φ(Di−1)$。在使用势能法时，平摊开销(amortized cost)就是：
 
 ![image-20211121183511698](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121183511698.png)
 
-平摊开销 = 势能差 + 真实开销 （核心思想类似上一节的acounting 方法）
+平摊开销 =  真实开销 + 势能差 （核心思想和上一节的acounting 方法一样，把“提前支付”变成了储存势能 -> 释放势能）
 
 
 
 经过 $n$次操作以后, 平摊开销就是：
 
 ![image-20211121184240125](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121184240125.png)
+
+
 
 继续使用stack作为例子：
 
@@ -2429,7 +2402,7 @@ MULTIPOP（S, k）：弹出栈顶k个对象
 
 
 
-如果第$i$次的操作是对一个 *有$s$个数据对象的堆栈* 进行**PUSH**操作，那么势能差为：
+如果第$i$次的操作是对一个 *长度为 $s$的堆栈 $D_0$* 进行**PUSH**操作，那么势能差：
 
 ![image-20211121185201293](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211121185201293.png)
 
@@ -2460,8 +2433,6 @@ https://www.zhihu.com/question/40156083
 # 19 Fibonacci Heaps: 斐波那契堆
 
 这算法看的比红黑树还眩晕，细节参考原文吧，网上教程也很少；
-
-重点看一下这个操作的时间复杂度 以及 intuition 就溜了。
 
 ![image-20211122234213923](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211122234213923.png)
 
@@ -2499,11 +2470,31 @@ https://www.zhihu.com/question/40156083
 
 ## 19.1. Structure of Fibonacci heaps
 
-斐波那契堆是树的集合，每一棵树都满足最小堆性质；
+![image-20211206011340536](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206011340536.png)
 
-每一个node x 都有 ```x.p```指向parent, ```x.child```指向一个children;
+最重要的第一句话就是：
+
+>A **Fibonacci heap** is a collection of rooted trees that are **min-heap ordered**. That
+>
+>is, each tree obeys the **min-heap property**:
+
+即：
+
+1. **斐波那契堆是树的集合，每一棵树都满足最小堆性质；**
+
+就像是$[root1,root2, ..., rootN]$, 每个root都是一个树；他们彼此之间用**Double Linked List**串起来;
+
+
+
+2. **Fib Heap**的特点是始终维护一个指针指向最小值的节点；
+
+
+
+3. root的每一个node $x$ 都有 ```x.p```指向parent, ```x.child```指向一个children;
 
 x的children用**双向链表** 像环一样的连在一起，我们叫他```child list of x```
+
+
 
 >![ ](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211122134407345.png)
 >
@@ -2515,21 +2506,37 @@ x的children用**双向链表** 像环一样的连在一起，我们叫他```chi
 
 
 
-```insert```:
 
-- 在root list的位置插入新的node，把left和right指针设置好；
-- 如果小于```min```指针，就更新```min```指针为当前对象；
-- 总结点数量+1
+
+## ```insert```: 斐波那契堆的插入操作
 
 
 
-```extract_min()```:
+![image-20211206020839193](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206020839193.png)
 
-这个操作会像pop一样取出当前最小的节点，并且可能会调整整个堆的结构；
+![image-20211206020920535](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206020920535.png)
+
+注意：
+
+- 我们直接插入root list而不是某个节点的child list
+
+  
+
+![image-20211206021133020](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206021133020.png)
+
+**合并两个堆，这个操作比较简单，核心就是直接concatenate两个堆的root list, 更新min指针；**
+
+
+
+
+
+## ```extract_min()```: 最复杂的操作
+
+这个操作会像pop出当前最小的节点，然后调用```consolidate```来确保自己的结构不被破坏；
 
 *这是最核心的操作，也是最眩晕的操作：*
 
-
+![image-20211206021312030](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206021312030.png)
 
 - 根据```min```指针取出最小对象，say ```z```；
 - 如果```z```有child, 把所有child先**升级到root list**当中，然后将parent设置为**None**；
@@ -2569,13 +2576,19 @@ x的children用**双向链表** 像环一样的连在一起，我们叫他```chi
 
 # 22 Graph: 图
 
+BFS/DFS: $O(E+V)$
+
+Topological sort: $O(V+E)$
+
+## 22.1 图的表示：
+
 表示图的标准方法：
 $$
 G = (V,E)
 $$
 Graph是由Vertices定点和Edges边组成的；
 
-**无向图**表示法: 
+**无向图**有两种表示法: 
 
 ![image-20211127191038926](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211127191038926.png)
 
@@ -2583,31 +2596,35 @@ Graph是由Vertices定点和Edges边组成的；
 
 (a): 由5个顶点，7个边组成的无向图
 
-(b): 临边列表表示法(adjaceny-list representation) of G
+**(b): list表示法(adjaceny-list representation) of G**
 
-(c): 临边矩阵表示法(The adjacency-matrix representation) of G
+**(c): matrix表示法(The adjacency-matrix representation) of G**
 
 再无向图中，(c)是对称的;
 
 
 
-**有向图**表示法：
+**有向图(directed graph)**表示法类似：
 
 ![image-20211127191524068](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211127191524068.png)
 
 (a):由6个顶点，8个边组成的无向图
 
-(b): 临边列表表示法(adjaceny-list representation) of G
+**(b): list表示法(adjaceny-list representation) of G**
 
-(c): 临边矩阵表示法(The adjacency-matrix representation) of G
+**(c): matrix表示法(The adjacency-matrix representation) of G**
+
+
+
+
 
 ## 22.2 BFS：广度优先搜索
 
 广度优先搜索，没啥说的了；
 
-下面的代码假设图的储存方式是LIST储存法；(而不是MATRIX)
 
-![image-20211128015122938](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211128015122938.png)
+
+![image-20211209220724891](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209220724891.png)
 
 
 
@@ -2617,11 +2634,11 @@ d表示距离；
 
 $\pi$ : 代表parent;
 
-
-
 这里使用堆栈的方法来储存接下来要开始BFS的节点；
 
 
+
+RUNTIME: $O(V+E)$
 
 ## 22.3 DFS： 深度优先搜索
 
@@ -2633,13 +2650,71 @@ $\pi$ : 代表parent;
 
 
 
-稍微注意下开始和结束的时间，其他没啥说的
+**请注意开始和结束的时间，使用DFS来计算终止时间的方法会在后续算法被用到。**
 
 ![image-20211128020036926](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211128020036926.png)
 
 
 
+## 22.4 DAG & Topological Sort: 有向无环图 与 拓扑排序
+
+**DAG（Directed acyclic graph）有向无环图**:
+
+无法形成cycle就是DAG，最后一定会终止在某个点；
+
+![image-20211204211614482](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211204211614482.png)
+
+严格的定义如下：
+
+
+
+
+
+因为这样的特性，才能被拓扑排序;
+
+**拓扑排序 (Topological Sort)：**
+
+
+
+![image-20211209225116837](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209225116837.png)
+
+RUNTIME: $O(V+E)$
+
+
+
+## 22.5 Strongly connected components
+
+啥是紧密连接组件？看图就懂了：
+
+
+
+![image-20211210000159590](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211210000159590.png)
+
+严格定义如下：
+
+Strongly connected component of a directed graph $G = (V,E)$ is a maximal set of vertices $C \in V$ such that for every pair of vertices $u$ and $v$ in $C$, **we have both u~\>v and v~>u;** that is, **vertices u and** 
+
+**v are reachable from each other.**
+
+
+
+使用DFS来发现紧密组件：
+
+![image-20211210000521341](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211210000521341.png)
+
+
+
+
+
 ## 23. 最小生成树: Minimum Spanning Trees
+
+Spanning Trees:
+
+
+
+**A set of edges A that “span” or “touch” all vertices, and forms no cycles**
+
+
 
 最小生成树往往是在**无向有权图**上来讨论。
 
@@ -2649,7 +2724,7 @@ $\pi$ : 代表parent;
 
 
 
-**简单的定义：你希望找到一组总权重最小，同时经过了所有点的边；**
+**简单的定义：你希望找到一组边：1.连接了所有点 2. 总权重最小**
 
 
 
@@ -2659,11 +2734,11 @@ $\pi$ : 代表parent;
 
 
 
-找到最小生成树的算法的大致模糊思路如下，详细的会在下一节展，这里看看就好：
+找到最小生成树的算法的大致**模糊思路**如下，详细的会在下一节展，这里看看就好：
 
 <img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211129230119205.png" alt="image-20211129230119205" style="zoom:80%;" />
 
-A是一组边的集合，一开始设为空集；A代表最小生成树的子集，最终会成为一颗MST（最小生成树）。
+A是一组边的集合，一开始设为空集，最终会成为一颗MST（最小生成树）;
 
 如图，在A成为完整MST前，每一步我们都：
 
@@ -2673,7 +2748,16 @@ A是一组边的集合，一开始设为空集；A代表最小生成树的子集
 
 
 
+因此，核心就是如何判断edge是不是safe的。
+
+how to find a safe edge to a given set of edges A? 
+
+- Prim algorithm 
+-  Kruskal algorithm
+
 在展开算法前，对一些术语下定义：
+
+
 
 先给原文，再给我的简单理解：
 
@@ -2681,20 +2765,23 @@ A是一组边的集合，一开始设为空集；A代表最小生成树的子集
 
 1. **图的切分：cut(S, V - S)**
 
-下图是**cut(S, V - S)**；
+**cut(S, V - S)**；
 
-S是黑点，上方的图；
+很直观，切分后S代表黑点；V-S是白点，下方；
 
-V-S是白点，下方；
+
 
 2. 如果一条边在S和V-S各有一个顶点，那我们说这条边**cross** cut(S, V - S)
+
+
+
 3. 在cross的边中，weight最小的边叫做**light edge**.
 
 ![image-20211129235123255](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211129235123255.png)
 
 
 
-## 23.2 找到最小生成树的算法: The algorithms of Kruskal and Prim
+## 23.2 最小生成树算法: The algorithms of Kruskal and Prim
 
 两个算法都是贪心算法。
 
@@ -2704,9 +2791,15 @@ V-S是白点，下方；
 
 ![image-20211130010445278](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211130010445278.png)
 
+> **1.** *Sort all the edges in non-decreasing order of their weight.* 
+> **2.** *Pick the smallest edge. Check if it forms a cycle with the spanning tree formed so far. If cycle is not formed, include this edge. Else, discard it.* 
+> **3.** *Repeat step#2 until there are (V-1) edges in the spanning tree.*
 
 
-第六行的```find-set```操作其实就是检查图是否有形成cycle(能不能连通)。
+
+
+
+第六行的```find-set```操作其实就是检查图是否有形成cycle。
 
 所以，核心就是将边先按照**升序**排序，然后进行遍历；
 
@@ -2714,8 +2807,8 @@ V-S是白点，下方；
 
 对当前遍历到的边：
 
-- 如果加入这条边后，A形成cycle, 那么跳过这条边；
-- 如果没有形成cycle，那么将当前的边加入A
+- 如果加入这条边后，形成了cycle, 那么跳过这条边；
+- 反之，没有形成cycle，那么将当前的边加入A
 
 最后返回。
 
@@ -2724,6 +2817,70 @@ V-S是白点，下方；
 ![image-20211130012241595](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211130012241595.png)
 
 
+
+一个简单的并查集算法:
+
+```python
+# Python Program for union-find algorithm to detect cycle in a undirected graph
+# we have one egde for any two vertex i.e 1-2 is either 1-2 or 2-1 but not both
+
+from collections import defaultdict
+
+
+# This class represents a undirected graph using adjacency list representation
+class Graph:
+
+    def __init__(self, num_of_vertices):
+        self.V = num_of_vertices
+        self.graph = defaultdict(list)
+
+    # function to add an edge to graph
+    def addEdge(self, u, v):
+        self.graph[u].append(v)
+
+    # A utility function to find the subset of an element i
+    def find_parent(self, parent, i):
+        if parent[i] == -1:
+            return i
+        if parent[i] != -1:
+            return self.find_parent(parent, parent[i])
+
+    # A utility function to do union of two subsets
+    def union(self, parent, x, y):
+        parent[x] = y
+
+    # The main function to check whether a given graph
+    # contains cycle or not
+    def isCyclic(self):
+
+        parent = [-1] * (self.V)
+
+        # Iterate through all edges of graph, find subset of both
+        # vertices of every edge, if both subsets are same, then
+        # there is cycle in graph.
+        for i in self.graph:
+            for j in self.graph[i]:
+                x = self.find_parent(parent, i)
+                y = self.find_parent(parent, j)
+                if x == y:
+                    return True
+                self.union(parent, x, y)
+
+
+# Create a graph given in the above diagram
+g = Graph(3)
+g.addEdge(0, 1)
+g.addEdge(1, 2)
+g.addEdge(2, 0)
+
+if g.isCyclic():
+    print("Graph contains cycle")
+else:
+    print("Graph does not contain cycle ")
+
+# This code is contributed by Neelam Yadav
+
+```
 
 
 
@@ -2735,6 +2892,338 @@ V-S是白点，下方；
 
 
 
+## 24. Single Source Shortest Paths: 最短路径问题
+
+![image-20211203212607552](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211203212607552.png)
+
+
+
+**Big name Algorithm:**
+
+- Dijkstra algorithm
+
+- Floyd Warshall algorithm
+
+### 定义问题：
+
+
+
+本章节关注**单源头**(single source)最短路径问题：给定图 $G(V,E)$ ,找到一个**给定的点** $s$ 到**图中所有点**的最短路径。
+
+
+
+### **负权重边的影响**
+
+
+
+![image-20211204000219107](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211204000219107.png)
+
+
+
+- $s - b$ 只有一条路径，此时负权重边无影响；
+- $s - d$ 有无限条路径：$<s,c>, <s,c,d,c>,<s,c,d,c,d,c>$, 但是最小权值路径还是$<s,c>$,因此也不受影响；
+- 关于 $s-e$, 同样有无限路径：$<s,e>, <s,e,f,e>,<s,e,f,e,f,e>$, 但是 $<e,f,e>$ 的权重是$3 + (-6) = -3 < 0$, 因此 $<s,e>$ **没有最短路径；**因此我们表示$<s,e> = -\infty$ ;
+- $<s,g>$,**因为$g$和$f$是相连的**，因此$<s,g>$**也没有最短路径**；$<s,e> = -\infty$ ;
+- $s$ 永远无法抵达 $h, i, j$ ,所以$<s,h> = <s,i> = <s,j> =  \infty$ 
+
+
+
+**Dijkstra算法** 假设所有边都是**非负数**；
+
+**Bellman-Fordrm 算法** 没有这种假设；
+
+
+
+### Relaxation: 更新最短路径的机制
+
+good explanation from :
+
+https://stackoverflow.com/questions/2592769/what-is-the-relaxation-condition-in-graph-theory
+
+
+
+- You have two nodes, `u` and `v`
+- For every node, you have a *tentative distance* from the source node (for all nodes except for the source, it starts at positive infinity and it only decreases up to reaching its minimum).
+
+**你使用relaxation来检测是否能improve到达某个节点的shortest path。(每个节点初始值默认为无穷大)**
+
+举个例子：
+
+```
+s ~~~~~~~> v
+ \         ^
+  \        |
+   \~~~~~> u
+```
+
+
+
+
+
+比如上图，s是源点，那么:
+
+- 目前**已知**从s出发能到达v, 我们表示为distance(s,v)
+- 你也知道s能到u, 表示为distance(s,u)
+
+在使用Relaxation的某个算法的某个时刻遍历到$<u,v>$ 这条边，就会判断：If `dist[u] + weight(u, v) < dist[v]`, 那么 `s~>u->v` is shorter than `s~>v`, 所以我们应该更新s - v的最短路径！
+
+
+
+理解这个很重要，后面直接用Relax来表示这个机制；
+
+### BELLMAN-FORD算法
+
+初始化一个长度是 $V$ 的矩阵 $[ 0,\infty,\infty,... ]$，代表源头到其他点的距离，第一项设为0因为是自己到自己的距离；
+
+之后就是Relaxation: 像DP 一样不断更新$s$ 到其他点的最短路径；
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gx2hsbtja6j31420gsn0h.jpg" alt="image-20211204161009003" style="zoom: 50%;" />
+
+
+
+<img src="https://tva1.sinaimg.cn/large/008i3skNgy1gx2ht4kpqnj312x0u0q7m.jpg" alt="image-20211204161054751" style="zoom:50%;" />
+
+
+
+
+
+```
+      2
+V0-----------V1
+ \            \
+4 \            \ 5
+   \            \
+   V2------------V3
+          2
+```
+
+
+
+书上例子不太好，用这个走一遍：
+
+
+
+- 1. 初始化$dist = [0, inf, inf, inf]$
+
+- 2. 走到边$<v0 - v1>$ , $dist[0] + 2 < dist[1]$ 成立, 更新$dist = [0, 2, inf, inf]$
+- 3. 走到边$<v0 - v2>$ , $dist[0] + 4 < dist[2]$ 成立, 更新$dist = [0, 2, 4, inf]$
+
+- 4. 走到边$<v1 - v3>$ , $dist[1] + 5 < dist[3]$ 成立, 更新$dist = [0, 2, 4, 7]$
+- 5. 走到边$<v2 - v3>$ , $dist[2] + 2 < dist[3] = 7$ 成立, 更新$dist = [0, 2, 4, 6]$
+
+
+
+这是第一遍，**我们总共要走**$V-1$**遍才能结束**，但是后面的两遍都不会有更新了；
+
+
+
+为啥要走$V-1$遍呢？目前我发现和**储存顺序有关**；
+
+再来一个例子：
+
+![image-20211204200430160](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211204200430160.png)
+
+
+
+如果你按照顺序 1-2, 2-3, 3-4来储存，可以一遍过；
+
+但是如果是3-4, 2-3, 1-2，你需要$V-1$ 也就是三次才能走对；
+
+因为如果当前节点之前没遇到过，$dist[当前节点]$就是$\infty$, 无法被更新；
+
+在程序里会判断**每一步**的出发点是否是NIL; 可以去代码试一下；
+
+
+
+
+
+### 24.2 DAG shortest path: DAG的最短路径
+
+657
+
+对拓扑排序好的DAG，按照顺序用一遍RELAX即可：
+
+![image-20211204204831258](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211204204831258.png)
+
+
+
+RUNTIME: $ O(V+E) $
+
+
+
+### 24.3 Dijkstra 算法
+
+
+
+Dijkstra算法比Bellman-ford更快，但是需要图中不存在负循环；
+
+![image-20211204222435609](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211204222435609.png)
+
+
+
+- 2,3行的 $S$ 代表最短路径集合，而 $Q$ 是没探索的点，也就是 $V-S$，一开始就是所有点$G.V$; Q是用最小优先队列(堆算法)实现的，有 ``` EXTRACT-MEAN ```方法；还需要 ```MIN-HEAPIFY``` 方法；
+
+只要 $Q$ 不空就循环：
+
+- 从Q
+
+
+
+## 25 All-Pairs Shortest Paths
+
+
+
+>In this chapter, we consider the problem of fifinding shortest paths between all pairs
+>
+>of vertices in a graph. 
+
+
+
+上一张是sinle source shortest path (SSSP)，求出源点到其他所有点的最短距离;
+
+本章节关注**All-Pairs Shortest Paths** (APSP), 求出所有点之间的最短距离。
+
+
+
+### 25.1 Matrix Multiplication算法
+
+使用DP的方法不断更新最小路径；
+
+回顾一下矩阵A 乘以 矩阵B的是matrix multiplycation算法：
+
+![image-20211205235342182](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211205235342182.png)
+
+APSP图算法和这个极为相似：
+
+![image-20211205235430503](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211205235430503.png)
+
+时间复杂度是$O(n^3)$
+
+解释一下 $l_{ij}^m$ :
+
+$l_{ij}^m$ 代表了： 在最多$m$ 条边的情况下, 点$i$ 到 点$j$ 的最小weight. 因此：
+
+
+
+![image-20211205235903734](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211205235903734.png)
+
+
+
+如果m大于1:
+
+![](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206000442309.png):
+
+这里是DP的思想，遍历所有中介点k来尝试更新 $i$ 到 $j$ 能不能有更短的距离；*(原书的版本写的实在太绕了，希望我的总结能帮你get到 intuition :) )* 
+
+
+
+总体的APSP算法如下：
+
+![image-20211206001006615](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206001006615.png)
+
+总耗时$O(n^4)$.
+
+
+
+总体思想如下：
+
+![image-20211206001420174](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206001420174.png)
+
+
+
+这是一个Bottom up的算法，随着m的增加，我们不断更新L矩阵；到最后m = n-1,就得到了全局的最小权重路径；
+
+这个算法又绕又慢，不看也罢；
+
+
+
+### 25.2 The Floyd-Warshall algorithm
+
+时间复杂度：$O(V^3)$
+
+简单粗暴多了(可以直接看下面的改进版，忽略这个)
+
+![image-20211206001835830](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206001835830.png)
+
+改进版：
+
+W是矩阵表示法的图，输入进去：
+
+这个算法我们只需要维护一个矩阵，减少了空间占用；
+
+![image-20211206002127309](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211206002127309.png)
+
+一句话概括就是在所有$i$ 到 $j$ 的中间再遍历一层 $k$, 使用DP方法动态更新 $i$ 到 $j$ 的最短路径；
+
+
+
+顺便贴一下leetcode:[https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/]
+
+
+
+
+
+
+
+## 26 Maximum Flow：最大流问题
+
+**Flow networks**
+
+> A flow network $G = (V,E)$ is a directed graph in which each edge $(u,v) \in E$ has a nonnegative capacity $c(u,v) \geq 0$.
+
+**Flow networks**是有向图，每一条边多了一个运载能力(capacity),代表通过这条边的上线；(想象网络负载的场景)
+
+
+
+在这一章我们主要关注 Maximum flow problem:
+
+
+
+>  In maximum flow problem, we are given a flow network G with **source s and sink t**, and we wish to find a flflow of maximum value.
+
+
+
+这里又引入了两个概念：source 和 Sink
+
+
+
+## 26.2 The Ford-Fulkerson method
+
+We call it a “method” rather than an “algorithm” because it encompasses
+
+several implementations with differing running times. 
+
+![image-20211209134842153](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209134842153.png)
+
+
+
+为了理解这个算法，引入残差网络的概念：
+
+###  Residual networks
+
+![image-20211209174916280](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209174916280.png)
+
+
+
+augmentation
+
+![image-20211209175126666](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209175126666.png)
+
+
+
+![image-20211209175811719]()
+
+![](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209175811719.png)
+
+
+
+
+
+
+
+
+
+![image-20211209183355749](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209183355749.png)
 
 
 
@@ -2761,25 +3250,14 @@ V-S是白点，下方；
 
 
 
-# 位运算：Bit-Manipulation
-
-后面就不是算法导论/课堂的内容了。
-
-![image-20211118215125750](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211118215125750.png)
-
-## 计算机如何表示整数？
-
-来自https://www.cnblogs.com/Neeo/articles/10536202.html
-
-需要掌握以下四个概念：
-
-``定点数``有3种表示法：``原码``、``反码``和``补码``。
 
 
+
+# 位运算算法
 
 **原码**
 
-[原码](https://baike.baidu.com/item/原码)(true form)是一种计算机中对数字的二进制定点表示方法。原码表示法在数值前面增加了一位符号位（即最高位为符号位）：正数该位为0，负数该位为1（0有两种表示：+0和-0），其余位表示数值的大小。
+是一种计算机中对数字的二进制定点表示方法。原码表示法在数值前面增加了一位符号位（即最高位为符号位）：正数该位为0，负数该位为1（0有两种表示：+0和-0），其余位表示数值的大小。
 
 
 
@@ -2815,10 +3293,6 @@ V-S是白点，下方；
 
 
 
-## 位运算算法
-
-
-
 ### **如何check if 一个数是2的次方？**
 
 方法1：
@@ -2830,15 +3304,7 @@ V-S是白点，下方；
 这个方法的时间复杂度是$O(lgn)$
 
 ```python
-def isPowerOfTwo(n):
-    if (n == 0):
-        return False
-    while (n != 1):
-            if (n % 2 != 0):
-                return False
-            n = n // 2
-             
-    return True
+def isPowerOfTwo(n):    if (n == 0):        return False    while (n != 1):            if (n % 2 != 0):                return False            n = n // 2                 return True
 ```
 
 
@@ -2879,8 +3345,7 @@ def isPowerOfTwo(n):
 所以我们的函数：
 
 ```python
-def isPowerOfTwo(x):
-	return (x and (not(x & (x - 1))))
+def isPowerOfTwo(x):	return (x and (not(x & (x - 1))))
 ```
 
 
@@ -2890,11 +3355,7 @@ def isPowerOfTwo(x):
 首先, python中有内置函数，来count1:
 
 ```python
->>> bin(5)
-'0b101'
-
->>> bin(5).count('1')
-2
+>>> bin(5)'0b101'>>> bin(5).count('1')2
 ```
 
 但是这不是我们想要的。
@@ -2956,14 +3417,7 @@ https://leetcode.com/problems/hamming-distance/
 
 
 ```python
-class Solution:
-    def hammingDistance(self, x: int, y: int) -> int:
-        x = x^y
-        res = 0 
-        while x:
-            x = x & (x - 1)
-            res += 1
-        return res
+class Solution:    def hammingDistance(self, x: int, y: int) -> int:        x = x^y        res = 0         while x:            x = x & (x - 1)            res += 1        return res
 ```
 
 
@@ -3085,41 +3539,7 @@ class Solution:
 ![image-20211117142319656](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211117142319656.png)
 
 ```python
-def bfs(n, m, edges, s):
-    queue = [s]
-    visited = [s]
-    dists = {s: 0}
-    adjList = {}
-    for i in range(len(edges)):
-        edge = edges[i]
-        x = edge[0]
-        y = edge[1]
-        if x in adjList:
-            if y not in adjList[x]:
-                adjList[x].append(y)
-        else:
-            adjList[x] = [y]
-        if y in adjList:
-            if x not in adjList[y]:
-                adjList[y].append(x)
-        else:
-            adjList[y] = [x]
-    while len(queue) > 0:
-        node = queue.pop(0)
-        if node in adjList:
-            neighbors = adjList[node]
-            for j in range(len(neighbors)):
-                if neighbors[j] not in visited:
-                    dists[neighbors[j]] = dists[node] + 6
-                    visited.append(neighbors[j])
-                    queue.append(neighbors[j])
-    res = []
-    for i in range(1,n+1):
-        if i not in dists:
-            res.append(-1)
-        elif dists[i] != 0:
-            res.append(dists[i])
-    return res
+def bfs(n, m, edges, s):    queue = [s]    visited = [s]    dists = {s: 0}    adjList = {}    for i in range(len(edges)):        edge = edges[i]        x = edge[0]        y = edge[1]        if x in adjList:            if y not in adjList[x]:                adjList[x].append(y)        else:            adjList[x] = [y]        if y in adjList:            if x not in adjList[y]:                adjList[y].append(x)        else:            adjList[y] = [x]    while len(queue) > 0:        node = queue.pop(0)        if node in adjList:            neighbors = adjList[node]            for j in range(len(neighbors)):                if neighbors[j] not in visited:                    dists[neighbors[j]] = dists[node] + 6                    visited.append(neighbors[j])                    queue.append(neighbors[j])    res = []    for i in range(1,n+1):        if i not in dists:            res.append(-1)        elif dists[i] != 0:            res.append(dists[i])    return res
 ```
 
 
@@ -3134,4 +3554,6 @@ def bfs(n, m, edges, s):
 
 ![image-20211025160940605](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025160940605.png) 
 
-egg_drop
+egg_drop 
+
+cd /d 
