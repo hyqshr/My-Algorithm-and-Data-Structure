@@ -1,3 +1,4 @@
+
 class Solution:
     def rob(self, A):
         if len(A) == 1:

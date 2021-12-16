@@ -9,43 +9,53 @@ Notes for Introduction to Algorithms
 
 - 持续更新中，有一些图片还未上传到图床。
 
-
-
 - notes by  ```Yiqiu Huang```
 
 
 
 # 3.  Growth of Funcitons
 
-## 3.1  **Asymptotic notation**
+## 3.1  Asymptotic notation: 算法的渐进表示
 
-**What is $T(n)$?**
+根据算法导论的原文：
 
-- we call it T(n) = number of computational steps required to run the algorithm/program for input of size n 
+> T(n) = number of computational steps required to run the algorithm/program for input of size n 
 
-- we are interested in order of growth, not exact values 
-  -  for example T(n) = Θ(n2) means quadratic running time  
-  -  T(n) = O(n logn) means T(n) grows not faster than CONST*n*log(n)
+也就是, $T(n)$ 代表了给定input size: $n$ 以后的计算步骤 (computational steps)；
 
 
 
-Why **Asymptotic notation**?
+- 但是我们在意的是算法伴随 $n$ 的增长，而不是具体的步骤数量；
+  -  比如 $T(n) = Θ(n^2)$ 代表了quadratic running time  
+  -  $T(n) = O(n logn)$ 说明 $T(n)$ **至多**是$n$的 $nlog(n)$倍数；
 
->Even when we use asymptotic notation to apply to the running time of an algorithm, we need to understand which running time we mean.
 
 
+**渐进分析 Asymptotic notation**:
 
 
 
 ![image-20211025143113872](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025143113872.png)
 
+图：$\Theta 、O、\Omega $ 的含义
 
+最简单的理解他们的方法就是,:
+
+$\Theta$ :代表了**等于号**，比如$\Theta(f(n))$代表函数 $f$ 的"运行时间"等于 $T(n)$；
+
+$O$:代表了**小于号**，比如$O(f(n))$代表函数 $f$ 的"运行时间"**至多是** $T(n)$；
+
+$\Omega $: 代表了**大于号**，比如$\Theta(f(n))$代表函数 $f$ 的"运行时间"**至少是** $T(n)$；
+
+
+
+以$O$ 为例，看图$(b)$ ，当 input size $n$ 到达一定规模 $n_0$ 以后, $c$是一个常数
 
 ### 3.1.1 $\Theta$ Notation
 
 原文定义如下：
 
->For a given function g(n), we denote by $\Theta$(g(n)) the set of functions:
+>For a given function g(n), we denote by $\Theta(g(n))$ the **set of functions:**
 >
 >
 >
@@ -57,17 +67,17 @@ Why **Asymptotic notation**?
 
 
 
-简单来说就是n到一定大小以后($n \geq n_0$,$n_0$是个常数), **在常数范围内**, $f(n) = g(n)$,($0\leq c_1g(n) \leq f(n) \leq c_2g(n)$), 看下图(a)。
+简单来说就是 $n$ 到一定大小以后 ($n \geq n_0$,$n_0$是个常数), **在常数范围内**, $f(n) = g(n)$,($0\leq c_1g(n) \leq f(n) \leq c_2g(n)$), 看上图(a)。
 
 
 
-注意，$\Theta(g(n))$ 本身**描述的是一个集合**，所以你可以这么写：
+注意，$\Theta(g(n))$ 本身**描述的是一个集合**，用来表示所有$\Theta(n)$运行时间的函数集合，所以你可以这么写：
 $$
 f(n) \in \Theta(n)
 $$
 
 
-不过我们习惯这么写： 
+不过习惯上这么写： 
 $$
 f(n) = \Theta(n)
 $$
@@ -91,11 +101,11 @@ $$
 
 原文定义如下：
 
->For a given function g(n), we denote by $\Theta$(g(n)) the set of functions:
+>For a given function g(n), we denote by $O$(g(n)) the set of functions:
 >
 >
 >
->$\Theta(g(n))$ = \{$f(n)$: there exist positive constants $c$ and $n_0$ such that $0\leq f(n) \leq c g(n)$ for all n $\geq$ n0 \}
+>$O(g(n))$ = \{$f(n)$: there exist positive constants $c$ and $n_0$ such that $0\leq f(n) \leq c g(n)$ for all n $\geq$ n0 \}
 >
 >
 >
@@ -126,11 +136,11 @@ $$
 
 原文定义如下：
 
->For a given function g(n), we denote by $\Theta$(g(n)) the set of functions:
+>For a given function g(n), we denote by $\Omega$(g(n)) the set of functions:
 >
 >
 >
->$\Theta(g(n))$ = \{$f(n)$: there exist positive constants $c$ and $n_0$ such that $0 \leq c g(n) \leq f(n)$ for all n $\geq$ n0 \}
+>$\Omega(g(n))$ = \{$f(n)$: there exist positive constants $c$ and $n_0$ such that $0 \leq c g(n) \leq f(n)$ for all $n \geq n_0$ \}
 >
 >
 >
@@ -228,18 +238,12 @@ Suppose that our division of the problem yields **a** subproblems, each of which
 
 
 
-- **注意，Mergesort的a = b = 2**, **很多分治法a 并不等于 b 更不等于 2
+- **注意，Mergesort的a = b = 2**, 很多分治法a 并不等于 b，a 更不等于 2
 - 注意后面这句话: each of which is **1/b** the size of the original 他的意思是每个子问题的size都是原来的1/b，那么随着递归的进行，子问题的size就是:
 
 $$
 \frac{n}{b} -> \frac{n}{b^2} ->\frac{n}{b^3} -> ... \frac{n}{b^?}
 $$
-
-*可以思考一下这个 **?** 应该是什么*
-
-
-
-
 
 用白话来说就是，mergesort产生了2个size是(n/2)的subproblem。
 
@@ -329,23 +333,23 @@ $$
 
 
 
-![image-20211025161954364](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025161954364.png)
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025161954364.png" alt="image-20211025161954364" style="zoom:80%;" />
 
 
 
-![image-20211025162329705](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025162329705.png)
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025162329705.png" alt="image-20211025162329705" style="zoom:80%;" />
 
-![image-20211025162434114](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025162434114.png)
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025162434114.png" alt="image-20211025162434114" style="zoom:80%;" />
 
-![image-20211025162454849](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025162454849.png)
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025162454849.png" alt="image-20211025162454849" style="zoom:80%;" />
 
-![image-20211025162502931](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025162502931.png)
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025162502931.png" alt="image-20211025162502931" style="zoom:80%;" />
 
 ### 2. recursion-tree method
 
 
 
-![image-20211025164738578](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025164738578.png)
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211025164738578.png" alt="image-20211025164738578" style="zoom:80%;" />
 
 
 
@@ -403,11 +407,11 @@ Binary search, Mergesort 的runtime 可以轻松的求出。
 
 
 
-# 6. Sorting
+# 6. Sorting: 排序算法
 
 
 
-![image-20211029162717277](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211029162717277.png)
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211029162717277.png" alt="image-20211029162717277" style="zoom:67%;" />
 
 
 
@@ -2724,7 +2728,11 @@ Spanning Trees:
 
 
 
-**简单的定义：你希望找到一组边：1.连接了所有点 2. 总权重最小**
+**简单的定义：你希望找到一组边：**
+
+- **1.连接了所有点 **
+
+- **2. 总权重最小**
 
 
 
@@ -2750,7 +2758,7 @@ A是一组边的集合，一开始设为空集，最终会成为一颗MST（最�
 
 因此，核心就是如何判断edge是不是safe的。
 
-how to find a safe edge to a given set of edges A? 
+有以下的算法能实现上述的思路：
 
 - Prim algorithm 
 -  Kruskal algorithm
@@ -2971,7 +2979,7 @@ s ~~~~~~~> v
 
 理解这个很重要，后面直接用Relax来表示这个机制；
 
-### BELLMAN-FORD算法
+### 24.1 BELLMAN-FORD算法
 
 初始化一个长度是 $V$ 的矩阵 $[ 0,\infty,\infty,... ]$，代表源头到其他点的距离，第一项设为0因为是自己到自己的距离；
 
@@ -3021,7 +3029,7 @@ V0-----------V1
 
 再来一个例子：
 
-![image-20211204200430160](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211204200430160.png)
+<img src="https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211204200430160.png" alt="image-20211204200430160" style="zoom:67%;" />
 
 
 
@@ -3189,17 +3197,30 @@ W是矩阵表示法的图，输入进去：
 
 ## 26.2 The Ford-Fulkerson method
 
-We call it a “method” rather than an “algorithm” because it encompasses
-
-several implementations with differing running times. 
+注意，这里叫Method的原因是这个算法没有准确的runtime,会根据你的实现方式/数据输入发生很大的变化；
 
 ![image-20211209134842153](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209134842153.png)
 
-
+第2,3句包含的信息量太大了，第一次看容易懵逼。
 
 为了理解这个算法，引入残差网络的概念：
 
 ###  Residual networks
+
+这个ResNet不是CV里的那个resnet。
+
+注意，普通的network flow只允许单向边，单向边代表了flow的大小；
+
+Residual network只是在原有基础上，借助原有的capacity属性浓缩了更多信息，并且变成了双向的(也可能是单向)。
+
+
+
+统一一下数学说法：
+
+- $c(u,v)$ 来表示节点的capacity；
+- $f(u,v)$ 表示当前的flow的大小；
+
+
 
 ![image-20211209174916280](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209174916280.png)
 
@@ -3208,10 +3229,6 @@ several implementations with differing running times.
 augmentation
 
 ![image-20211209175126666](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209175126666.png)
-
-
-
-![image-20211209175811719]()
 
 ![](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211209175811719.png)
 
@@ -3227,6 +3244,235 @@ augmentation
 
 
 
+![image-20211210140434920](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211210140434920.png)
+
+
+
+
+
+## 26.3 Bipartite Matching
+
+
+
+![image-20211210225232395](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211210225232395.png)
+
+
+
+![image-20211210230006506](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211210230006506.png)
+
+
+
+## 26.4 Push-Relabel Algorithm
+
+Push-Relabel Algorithm 比 Ford-Fulkerson algorithm 更快；
+
+push-relabel approach based algorithm that works in $O(V^3)$
+
+和Ford-Fulkerson algorithm 一样，Push-Relabel Algorithm也是使用残差网络；
+
+Push-Relabel的机制更加注重当前的点位而不是全局；
+
+```
+Preflow() 
+1) Initialize height and flow of every vertex as 0.
+2) Initialize height of source vertex equal to total 
+   number of vertices in graph.
+3) Initialize flow of every edge as 0.
+4) 对于源点的临近点， flow and excess flow is equal to capacity initially.
+```
+
+1. **Push()** is used to make the flow from a node which has excess flow. If a vertex has excess flow and there is an adjacent with smaller height (in residual graph), we push the flow from the vertex to the adjacent with lower height. The amount of pushed flow through the pipe (edge) is equal to the minimum of excess flow and capacity of edge.
+
+
+
+1. **Relabel()** operation is used when a vertex has excess flow and none of its adjacent is at lower height. We basically increase height of the vertex so that we can perform push(). To increase height, we pick the minimum height adjacent (in residual graph, i.e., an adjacent to whom we can add flow) and add 1 to it.
+
+这个算法的代码几乎搜不到，花了几天看懂以后真觉得是个蛮神奇的算法，第一次有算法能给我"立体"的感觉。
+
+算法的Intuition：
+
+先看一下算法导论原文的伪码：
+
+![image-20211215232256415](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211215232256415.png)
+
+```
+1. 初始化
+2. while 有任何一条边能进行push或者relabel操作:
+		执行 push 或者 relabel
+```
+
+一开始看的一头雾水。
+
+
+
+- 首先，之前说了，算法允许一个点的inflow大于outflow; 因此，有一个**蓄水池**的机制，用来储存这个多出来的**excess flow**；
+
+- 同时, 我们赋予了每个点新属性：```height``` (代表高度)
+
+
+
+现在，把图想象成水管(edge)和连接点(vertex)。
+
+1. 起初，source高度是最高的，其他点的高度都是 $0$；**水往低处流**，因此source向邻近点注射水流 (flow)，根据source的邻边的capacity总和，直接有多少capacity就发射多少的flow；(因此通常会"超发"，多出来的水就是excess flow，就会触发蓄水池)
+
+2. 接着就进入了while：
+   - 只要周围有高度更低的边，我们就让**水往低处流**，使用```push```
+   - 否则，使用```relabel```来增加$height$, 确保自己比周围一个点高
+   - 如果蓄水池中所有点 **(除了source)** 的 $excess flow == 0$，跳出while
+
+
+
+这个算法精髓的地方在于，一开始我们"超发"水流，就会导致有$excess flow$; 
+
+
+
+但是到最后，```relabel```会把点的 $height$ 升高到 $source.height$ 以上, 让那些一开始超出capacity的流最终从蓄水池流回source，这样最终的流全部都是legal的， 我们也就得到了正确的最大流。
+
+
+
+这句话理解了，你就get到了核心的思想！
+
+
+
+下图来自算法导论原文p752, 纵轴代表了点的height属性
+
+
+
+![image-20211216002337597](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211216002337597.png)
+
+
+
+![image-20211216002358533](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211216002358533.png)
+
+![image-20211215235409871](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211215235409871.png)
+
+
+
+d. 由于周围没有admissive edge, 继续调用 ```relabel``` 升高高度：
+
+![image-20211215235606941](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211215235606941.png)
+
+e: 调用 ```relabel``` 以后，$y$ 中的excess flow灌回了 $x$:
+
+![image-20211215235718544](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211215235718544.png)
+
+
+
+f: 没有admissive edge继续升高 y:
+
+![image-20211215235850257](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211215235850257.png)
+
+f,g: y的flow灌回了source以后，没有了excess flow,算法终止。
+
+![image-20211216000004174](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211216000004174.png)
+
+具体实现稍微和原文有些出入，但是思想是一样的；
+
+
+
+![image-20211216002514743](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211216002514743.png)
+
+
+
+![image-20211216002701335](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211216002701335.png)
+
+![image-20211216002712133](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211216002712133.png)
+
+唯一要注意的是初始化操作```preflow```的7-10行将source周围的点根据capacity属性直接灌满了；
+
+这个算法和ford-fulkerson注重全局的思路不一样，Push-Relabel Algorithm更加localized, 也就会不停的更新当前的点，直到这个点没有 $excess flow$ 为止。这个操作就是```Discharge```完成的。
+
+![image-20211216003039096](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211216003039096.png)
+
+Python Implementation:
+
+```python
+# push-relabel algorithm
+
+def MaxFlow(C, s, t):
+    n = len(C)  # C is the capacity matrix
+    F = [[0] * n for i in range(n)]
+
+    # the residual capacity from u to v is C[u][v] - F[u][v]
+    height = [0] * n  # height of node
+    excess = [0] * n  # flow into node minus flow from node
+    seen = [0] * n  # neighbours seen since last relabel
+    # node list other than s and t
+    nodelist = [i for i in range(n) if i != s and i != t]
+
+    def push(u, v):
+        send = min(excess[u], C[u][v] - F[u][v])
+        F[u][v] += send
+        F[v][u] -= send
+        excess[u] -= send
+        excess[v] += send
+
+    def relabel(u):
+        '''
+        find smallest new height from neighbor for making a push possible
+        '''
+        min_height = float('inf')
+        for v in range(n):
+            if C[u][v] - F[u][v] > 0 and v != u:
+                min_height = min(min_height, height[v])
+                height[u] = min_height + 1
+
+    def discharge(u):
+        '''
+        An overflowing vertex u is discharged by pushing all of its excess flow through
+        admissible edges to neighboring vertices. Perform relabel if nessesary.
+        '''
+        while excess[u] > 0:
+            if seen[u] < n and seen[u] != u:  # check next neighbour
+                v = seen[u]
+                #if admissive and height greater than nerghbor
+                if C[u][v] - F[u][v] > 0 and height[u] > height[v]:
+                    push(u, v)
+                else:
+                    seen[u] += 1
+            else:  # we have checked all neighbours. must relabel
+                relabel(u)
+                seen[u] = 0
+
+    height[s] = n  # longest path from source to sink is less than n long
+    excess[s] = float("inf")
+    # send as much flow as possible to neighbours of source
+    for v in range(1,n):
+         push(s, v)
+
+    p = 0
+    while p < len(nodelist):
+        u = nodelist[p]
+        old_height = height[u]
+        discharge(u)
+        if height[u] > old_height:
+            nodelist.insert(0, nodelist.pop(p))  # move to front of list
+            p = 0  # start from front of list
+        else:
+            p += 1
+    return sum(F[s])
+
+
+# C = [[0, 3, 3, 0, 0, 0],
+#      [0, 0, 2, 3, 0, 0],
+#      [0, 0, 0, 0, 2, 0],
+#      [0, 0, 0, 0, 4, 2],
+#      [0, 0, 0, 0, 0, 2],
+#      [0, 0, 0, 0, 0, 3]]
+
+#Example given in CLRS p752
+C = [[0,0,14,0],
+     [0,0,5,0],
+     [0,0,0,8],
+     [0,0,0,0]]
+
+source = 0  # source
+sink = 3  # sink
+
+max_flow_value = MaxFlow(C, source, sink)
+print("Push-Relabeled(Preflow-push) algorithm")
+print("max_flow_value is: ", max_flow_value)
+```
 
 
 
@@ -3240,20 +3486,7 @@ augmentation
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 位运算算法
+# Bit Manipulation: 位运算算法
 
 **原码**
 
@@ -3417,7 +3650,14 @@ https://leetcode.com/problems/hamming-distance/
 
 
 ```python
-class Solution:    def hammingDistance(self, x: int, y: int) -> int:        x = x^y        res = 0         while x:            x = x & (x - 1)            res += 1        return res
+class Solution:    
+    def hammingDistance(self, x: int, y: int) -> int:        
+        x = x^y        
+        res = 0         
+        while x:            
+            x = x & (x - 1)            
+            res += 1        
+           return res
 ```
 
 
@@ -3426,121 +3666,18 @@ class Solution:    def hammingDistance(self, x: int, y: int) -> int:        x = 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 额外的图LeetCode
-
-
-
-![image-20211117142319656](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211117142319656.png)
+另外，leetcode大神常使用 
 
 ```python
-def bfs(n, m, edges, s):    queue = [s]    visited = [s]    dists = {s: 0}    adjList = {}    for i in range(len(edges)):        edge = edges[i]        x = edge[0]        y = edge[1]        if x in adjList:            if y not in adjList[x]:                adjList[x].append(y)        else:            adjList[x] = [y]        if y in adjList:            if x not in adjList[y]:                adjList[y].append(x)        else:            adjList[y] = [x]    while len(queue) > 0:        node = queue.pop(0)        if node in adjList:            neighbors = adjList[node]            for j in range(len(neighbors)):                if neighbors[j] not in visited:                    dists[neighbors[j]] = dists[node] + 6                    visited.append(neighbors[j])                    queue.append(neighbors[j])    res = []    for i in range(1,n+1):        if i not in dists:            res.append(-1)        elif dists[i] != 0:            res.append(dists[i])    return res
+if num & 1:
+	then num is odd
+else:
+	num is even
 ```
+
+来判断一个输入```num```是奇数还是偶数；
+
+
 
 
 

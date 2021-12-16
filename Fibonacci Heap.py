@@ -122,9 +122,11 @@ class FibonacciHeap:
 
 
     def consolidate(self):
+        # A is degree array, A[i] rep node at degree i
         A = [None] * int(math.log(self.total_nodes) * 2)
         nodes = [w for w in self.iterate(self.root_list)]
 
+        # for each node in the root list
         for w in range(0, len(nodes)):
             x = nodes[w]
             d = x.degree
@@ -132,10 +134,10 @@ class FibonacciHeap:
             #check if degree conflict
             while A[d] != None:
                 y = A[d]
-                #make the bigger node become the child of the other node
+                # make the bigger node become the child of the other node
                 if x.key > y.key:
                     x, y = y, x
-
+                # link bigger node as child to the smaller node
                 self.heap_link(y, x)
 
                 A[d] = None
@@ -227,7 +229,7 @@ def main():
 
     for i in input:
         x = heap.insert(i)
-
+    print(heap.min_node.key)
     #test EXTRACT-MIN
     print('\nCall EXTRACT-MIN and the min node value is {}'.format(heap.extract_min().key))
     print('After EXTRACT-MIN, data',sorted(heap.print_all_val()))

@@ -11,7 +11,7 @@ class Graph:
     residual graph. Also fills parent[] to store the path '''
 
     def BFS(self, s, t, parent):
-        print(self.graph)
+        # print(self.graph)
         # Mark all the vertices as not visited
         visited = [False] * (self.ROW)
 
@@ -52,9 +52,9 @@ class Graph:
         # This array is filled by BFS and to store path
         parent = [-1] * (self.ROW)
 
-        max_flow = 0  # There is no flow initially
+        max_flow = 0
 
-        # Augment the flow while there is path from source to sink
+        # 使用BFS的方法来检查source -> sink是否有路
         while self.BFS(source, sink, parent):
 
             # Find minimum residual capacity of the edges along the
@@ -92,9 +92,8 @@ graph = [[0, 16, 13, 0, 0, 0],
 
 g = Graph(graph)
 
-source = 0;
+source = 0
 sink = 5
 
 print("The maximum possible flow is %d " % g.FordFulkerson(source, sink))
 
-# This code is contributed by Neelam Yadav
