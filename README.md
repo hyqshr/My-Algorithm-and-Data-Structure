@@ -21,11 +21,16 @@ Notes for Introduction to Algorithms
 
 > T(n) = number of computational steps required to run the algorithm/program for input of size n 
 
-也就是, $T(n)$ 代表了给定input size: $n$ 以后的计算步骤 (computational steps)；
+也就是, $T(n)$ 代表了给定input size: $n$ 以后的计算步骤 (computational steps)数量；
 
 
 
-- 但是我们在意的是算法伴随 $n$ 的增长，而不是具体的步骤数量；
+- 但是我们在意的是，算法伴随 $n$ 的增长以后的倍数规模，而不是具体的步骤数量；
+
+  
+
+  下面这些是常见的表示方法
+
   -  比如 $T(n) = Θ(n^2)$ 代表了quadratic running time  
   -  $T(n) = O(n logn)$ 说明 $T(n)$ **至多**是$n$的 $nlog(n)$倍数；
 
@@ -39,17 +44,35 @@ Notes for Introduction to Algorithms
 
 图：$\Theta 、O、\Omega $ 的含义
 
-最简单的理解他们的方法就是,:
+**最简单的理解他们的方法就是,:**
 
 $\Theta$ :代表了**等于号**，比如$\Theta(f(n))$代表函数 $f$ 的"运行时间"等于 $T(n)$；
 
-$O$:代表了**小于号**，比如$O(f(n))$代表函数 $f$ 的"运行时间"**至多是** $T(n)$；
+$O$:代表了上界，表示**小于号**，比如$O(f(n))$代表函数 $f$ 的"运行时间"**至多是** $T(n)$；
 
-$\Omega $: 代表了**大于号**，比如$\Theta(f(n))$代表函数 $f$ 的"运行时间"**至少是** $T(n)$；
+$\Omega $: 代表了下界，表示**大于号**，比如$\Theta(f(n))$代表函数 $f$ 的"运行时间"**至少是** $T(n)$；
 
 
 
-以$O$ 为例，看图$(b)$ ，当 input size $n$ 到达一定规模 $n_0$ 以后, $c$是一个常数
+以$O$ 为例，看图$(b)$ ，当 input size $n$ 到达一定规模 $n_0$ 以后, $c$是一个常数.
+
+
+
+现在有一个问题：
+
+遍历一遍size为 $n$ 数组, 时间复杂度是对少？
+
+正常人都会说是$O(n)$。
+
+但是严格来说 ，你要说 $O(n^2)$也是对的，因为$n \leq n^2$ ，你也可以说是$O(n^3$)；
+
+但是平时我们希望找到**tight bound**, 也就是更紧密的边界。
+
+因此遍历数组用$\Theta(n)$ 来表示，我认为是最合适的；
+
+
+
+
 
 ### 3.1.1 $\Theta$ Notation
 
@@ -786,17 +809,31 @@ Sort M:
 
 # 16 Greedy Algorithms
 
-**Intro**: why greedy algorithm?
+**Intro**: 贪心算法(greedy algorithm) 的好处是什么？解读一下原文：
 
 >For many optimization problems, **using dynamic programming to determine the best choices is overkill**; 
 >
+>**用简单的话来概括原文，就是使用动态规划解决优化问题有点杀鸡用牛刀的意思(overkill)。**
+>
 >A **greedy algorithm** always makes the choice that looks best at the moment. That is, it makes a **locally optimal** choice **in the hope that** this choice will lead to a **globally optimal** solution.
 >
+>贪心算法做当前步骤的最好选择，每一步都这么做，最后得到全局最优解。
+>
+>这句话听着怪怪的，为什么每次只选当前的最好能得到全局最优解呢？原文也说了：
+>
 >**Greedy algorithms do not always yield optimal solutions**, but for many problems they do
+>
+>即，贪心算法并不总是对的。有一些问题贪心算法能始终保持正确，有些问题贪心算法并不适用；我们只关心那些能100%正确的贪心算法；
+>
+>因此，贪心算法难以设计，只适用于部分优化问题，但是他的computitional step比dp更少；
+
+
+
+学习贪心算法最经典就是三个例子：**Knapsack问题** ， **Activity-selection 问题** ，和**找零钱 (coin change)问题**。你在知乎等网站上搜贪心算法，也基本是这三个例子，属于典中典。
 
 ## 16.1 经典**例题1: ** An activity-selection problem 
 
-目标：我们要选择最大activities数量的集合，activities时间不能重合。（maximum-size set of activities.）
+目标：给定一堆任务的开始和结束时间，在activities时间不能重合的情况下，选择最大activities数量的集合。
 
 
 
@@ -804,17 +841,56 @@ Sort M:
 
 
 
-我们有n个activities,![image-20211008000112473](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211008000112473.png) 每个activity **a <sub>i</sub>** has a **start time** **f <sub>i</sub>** and a **finish time** **s <sub>i</sub>** 
+我们有n个activities,![image-20211008000112473](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211008000112473.png) 每个activity **a <sub>i</sub>** 有 **start time** **f <sub>i</sub>** 和 **finish time** **s <sub>i</sub>** 
 
 ![image-20211007235424245](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211007235424245.png)
 
 
 
-你选择的集合中，**a <sub>i</sub>** 和**a <sub>j</sub>** 需要是兼容的(compatible), 也就是他们**时间区间 [si,fi] 不能有重合**。
+你选择的集合中，**a <sub>i</sub>** 和**a <sub>j</sub>** ,**时间区间 [si,fi] 不能有重合**的部分。
 
 
 
-比如 set :{**a <sub>1</sub>**, **a <sub>2</sub>**} 是一个不合格的set, 因为 **a <sub>1</sub>** 的区间[1,4] 和 **a <sub>2</sub>** 的区间[3,5] 就在[3,4]上有重合，我们要避免这样的overlap,选出最大的子集。
+比如 set :{**a <sub>1</sub>**, **a <sub>2</sub>**} 是一个不合格的set, 因为 **a <sub>1</sub>** 的区间[1,4] 和 **a <sub>2</sub>** 的区间[3,5] 在[3,4]区间上有重合，我们要避免这样的overlap,选出最大的子集。
+
+
+
+**想法1：**
+
+根据直觉，在当前每一步都找 可行的$s_i$最小的任务行吗？
+
+```
+#假设活动根据开始时间si进行排序
+#创建答案集合 
+answer = {}
+
+#遍历每个活动
+for each activity:
+	if 当前活动ai的开始时间si < answer最后一项的fi：
+		answer.union(ai)
+```
+
+*这里省略了的第一次选择时 answer是空集的边界问题*。
+
+如果给定的集合是
+
+|       | $a_1$ | $a_2$ | $a_3$ |
+| :---: | :---: | :---: | :---: |
+| $s_i$ |   1   |   4   |   6   |
+| $f_i$ |   3   |   5   |   7   |
+
+这个想法是正确的；
+
+但是如果给定的集合是
+
+|       | $a_1$ | $a_2$ | $a_3$ |
+| :---: | :---: | :---: | :---: |
+| $s_i$ |   1   |   4   |   6   |
+| $f_i$ |  10   |   5   |   7   |
+
+这个想法的答案就是 $set{[1,10]}$, 而不是正确答案$set{[4,5],[6.7]}$
+
+因此，这就是一个不是100%准确的贪心算法，是**错误的**。
 
 
 
@@ -823,19 +899,36 @@ Sort M:
 >we should choose an activity that leaves the resource available
 >
 >for as many other activities as possible.
-
-
-
-这句话的意思在后来的另一个例子找硬币中也能体现出来，现在先往下走。
-
-
-
->**Greedy Algorithm的核心**：
 >
+>即，每一次选择都给后续的选择尽可能的留下更多空间；
+
+
+
+**正确的做法**
+
+根据活动的**结束时间**来选择活动。
+
+即，在当前可行的actibity中，选择$f_i$最小的actibity加入集合。
+
+
+
+继续刚才的例子：
+
+|       | $a_1$ | $a_2$ | $a_3$ |
+| :---: | :---: | :---: | :---: |
+| $s_i$ |   1   |   4   |   6   |
+| $f_i$ |  10   |   5   |   7   |
+
+这样的算法会先挑选出$a_2$(因为5是当前最小的$f_i$), 再挑出$a_3$，因此是正确的；
+
+建议自己画几个例子，就能理解了；
+
+
+
+>**Greedy Algorithm的核心就是如下两点**：
 >
->
->- **Greedy choice**: 每次都寻找**最早结束**的activity, Let's call it **a <sub>earliest</sub>**
->- **Subproblem**: only consider activity start after **a <sub>earliest</sub>** have finished. (排除有overlap的activity)
+>- 贪心选择**Greedy choice**: 每次都寻找**最早结束**的activity, Let's call it **a <sub>earliest</sub>**
+>- **子问题Subproblem**:  **a <sub>earliest</sub>** have finished. (排除有overlap的activity)
 >
 >
 >
@@ -849,17 +942,15 @@ Sort M:
 >
 >> *It also assumes that the input activities are ordered by monotonically increasing finish time.*
 
-看看就行：
+
+
+*OPTIONAL的内容*：
 
 经过经典的递归greedy algorithm解法，经典的下一步就是**把rucursive变成iterative**的解法。
 
 
 
 ![image-20211008005753258](https://raw.githubusercontent.com/hyqshr/MD_picgo/main/image-20211008005753258.png)
-
-
-
-## 16.1 经典**例题2: ** An activity-selection problem 
 
 
 
@@ -908,6 +999,8 @@ contains within it optimal solutions to subproblems.
 - 贪心算法only make **locally optimal choiceœ**, 部分的贪心算法不能保证走向 global-optimal solution, 但我们只关心那些能保证走向global-optimal solution的算法。
 - 贪心算法的核心在于寻找strategy, 你需要证明你的贪心策略是正确的。
 
+
+
 ## 16.3 [optional] Corectness of greedy algorithm
 
 证明贪心算法需要证明以下两个性质
@@ -934,7 +1027,7 @@ contains within it optimal solutions to subproblems.
 
 
 
-# 15 Dynamic Programming
+# 15 动态规划：Dynamic Programming
 
 >- **Dynamic programming, like the divide-and-conquer method, solves problems by**
 >
@@ -3397,6 +3490,7 @@ def MaxFlow(C, s, t):
     height = [0] * n  # height of node
     excess = [0] * n  # flow into node minus flow from node
     seen = [0] * n  # neighbours seen since last relabel
+
     # node list other than s and t
     nodelist = [i for i in range(n) if i != s and i != t]
 
@@ -3420,10 +3514,10 @@ def MaxFlow(C, s, t):
     def discharge(u):
         '''
         An overflowing vertex u is discharged by pushing all of its excess flow through
-        admissible edges to neighboring vertices. Perform relabel if nessesary.
+        admissible edges to neighboring vertices. Perform relabel if neccesary.
         '''
         while excess[u] > 0:
-            if seen[u] < n and seen[u] != u:  # check next neighbour
+            if seen[u] < n:  # check next neighbour
                 v = seen[u]
                 #if admissive and height greater than nerghbor
                 if C[u][v] - F[u][v] > 0 and height[u] > height[v]:
@@ -3436,7 +3530,7 @@ def MaxFlow(C, s, t):
 
     height[s] = n  # longest path from source to sink is less than n long
     excess[s] = float("inf")
-    # send as much flow as possible to neighbours of source
+    # initialize: send as much flow as possible to neighbours of source
     for v in range(1,n):
          push(s, v)
 

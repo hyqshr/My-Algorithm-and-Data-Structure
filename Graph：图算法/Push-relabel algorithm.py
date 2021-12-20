@@ -8,6 +8,7 @@ def MaxFlow(C, s, t):
     height = [0] * n  # height of node
     excess = [0] * n  # flow into node minus flow from node
     seen = [0] * n  # neighbours seen since last relabel
+
     # node list other than s and t
     nodelist = [i for i in range(n) if i != s and i != t]
 
@@ -31,10 +32,10 @@ def MaxFlow(C, s, t):
     def discharge(u):
         '''
         An overflowing vertex u is discharged by pushing all of its excess flow through
-        admissible edges to neighboring vertices. Perform relabel if nessesary.
+        admissible edges to neighboring vertices. Perform relabel if neccesary.
         '''
         while excess[u] > 0:
-            if seen[u] < n and seen[u] != u:  # check next neighbour
+            if seen[u] < n:  # check next neighbour
                 v = seen[u]
                 #if admissive and height greater than nerghbor
                 if C[u][v] - F[u][v] > 0 and height[u] > height[v]:
@@ -50,7 +51,7 @@ def MaxFlow(C, s, t):
     # initialize: send as much flow as possible to neighbours of source
     for v in range(1,n):
          push(s, v)
-    
+
     p = 0
     while p < len(nodelist):
         u = nodelist[p]
